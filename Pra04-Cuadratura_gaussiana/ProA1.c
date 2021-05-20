@@ -7,21 +7,20 @@ double legendre(int n, double x);
 double legendre_derivative(int n, double x);
 double chebyshev(int n, double x);
 double chebyshev_derivative(int n, double x);
-void sturm(int n, double f(int, double), double df(int, double), double v[]);
-void zeros(int n, double v[], int c);
+void zeros(int n, double f(int, double), double df(int, double), double v[]);
 double newton(double n, double f(int, double), double df(int, double), double x0, int iter);
 void imprimeix_vector(int dim, double v[]);
 double trapecios(int N, double a, double b);
 
 int main() {
     int n, m;
-    printf("Introduce 1 (Legendre) o 2 (Chebyshev) i el numero de raizes: ");
+    printf("Introduce 1 (Legendre) o 2 (Chebyshev) i el numero de raices: ");
     scanf("%i%i",&m,&n);
     double v[n];
     if (m == 1)
-        sturm(n, legendre, legendre_derivative, v);
+        zeros(n, legendre, legendre_derivative, v);
     else
-        sturm(n, chebyshev, chebyshev_derivative, v);
+        zeros(n, chebyshev, chebyshev_derivative, v);
     imprimeix_vector(n, v);
     return 0;    
 }
@@ -41,7 +40,7 @@ double legendre(int n, double x) {
 double legendre_derivative(int n, double x) {
     if (n == 0)
         return 0;
-    return (- n * x * legendre(n, x) + n * legendre(n - 1, x)) / (1 - x * x);
+    return n * (- x * legendre(n, x) + legendre(n - 1, x)) / (1 - x * x);
 }
 
 double chebyshev(int n, double x) {
@@ -50,6 +49,7 @@ double chebyshev(int n, double x) {
 
 double chebyshev_derivative(int n, double x) {
     return n * sin(n * acos(x)) / sqrt(1 - x * x);
+    // return n * (- x * chebyshev(n, x) + chebyshev(n - 1, x)) / (1 - x * x);
 }
 
 double newton(double n, double f(int, double), double df(int, double), double x0, int iter) {
@@ -59,7 +59,7 @@ double newton(double n, double f(int, double), double df(int, double), double x0
 	return x0;
 }
 
-void sturm(int n, double f(int, double), double df(int, double), double v[]) { //v tiene longitud n y en la salida guarda los zeros de f.
+void zeros(int n, double f(int, double), double df(int, double), double v[]) { //v tiene longitud n y en la salida guarda los zeros de f.
     double h = 2. / (n * n), a = -1, b;
     for (int numRoot = 0; numRoot < n; numRoot++, a = b) { // Calculate an initial aproximation of the roots of f
         b = a + h;
@@ -75,16 +75,6 @@ void sturm(int n, double f(int, double), double df(int, double), double v[]) { /
             v[numRoot] = 0;
     }
 }
-
-/*void zeros(int n, double v[], int c) { //v tiene longitud n y en la salida guarda las raices del polinomio.
-    sturm(n, v, c);
-    for (int numRoot = 0; numRoot < n; numRoot++) {
-        v[numRoot] = newton(n, v[numRoot], 7, c); //Newton con 7 iteraciones.
-        if (fabs(v[numRoot]) < TOL)
-            v[numRoot] = 0;
-    }
-    
-}*/
 
 void imprimeix_vector(int dim, double v[]) {
     for (int i = 0; i < dim; i++)
