@@ -10,21 +10,35 @@ double newton(double n, double f(int, double), double x0, int iter);
 void zeros(int n, double f(int, double), double v[]);
 void coeficientes(int n, double f(int, double), double v[], double A[]);
 double cuadratura(int n, double metodo(int, double), double a, double b, double f(double));
-double f1(double x);
-double f2(double x);
-double f3(double x);
+double f1_legendre(double x);
+double f1_chebyshev(double x);
+double f2_legendre(double x);
+double f2_chebyshev(double x);
+double f3_legendre(double x);
+double f3_chebyshev(double x);
 double trapecios(int N, double a, double b, double f(double));
 
 int main() {
-    printf("EJERCICIO 1\n\t\t\tCuadratura\t\tTrapecios\nIntegral 1:\n");
-    for (int n = 2; n <= 6; n += 2)
-        printf("\t\tn = %i: %.16G\t  %.16G\n", n, cuadratura(n, legendre, -1, 1, f1), trapecios(n, -1, 1, f1));
+    int N;
+    printf("Introducir el numero maximo de nodos: ");
+    scanf("%i",&N);
+    printf("EJERCICIO 1\n\t\t\tLegendre\t\tChebyshev\t\tTrapecios\nIntegral 1:\n");
+    for (int n = 2; n <= N; n += 2)
+        printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, legendre, -1, 1, f1_legendre), cuadratura(n, chebyshev, -1, 1, f1_chebyshev), trapecios(n, -1, 1, f1_legendre));
     printf("\nIntegral 2:\n");
-    for (int n = 2; n <= 6; n += 2)
-        printf("\t\tn = %i: %.16G\t  %.16G\n", n, cuadratura(n, chebyshev, -1, 1, f2), trapecios(n, -1, 1, f2));
+    for (int n = 2; n <= N; n += 2)
+        printf("\t\tn = %i:  %.16G\t%.16G\n", n, cuadratura(n, legendre, -1, 1, f2_legendre), cuadratura(n, chebyshev, -1, 1, f2_chebyshev));
     printf("\nIntegral 3:\n");
-    for (int n = 2; n <= 6; n += 2)
-        printf("\t\tn = %i: %.16G\t  %.16G\n", n, cuadratura(n, legendre, -1, 1, f3), trapecios(n, -1, 1, f3));
+    for (int n = 2; n <= N; n += 2)
+        printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, legendre, -1, 1, f3_legendre), cuadratura(n, chebyshev, -1, 1, f3_chebyshev), trapecios(n, -1, 1, f3_legendre));
+    // for (int i = 2; i < 9; i += 2) {
+    //     double v[i];
+    //     zeros(i,legendre,v);
+    //     for (int j = 0; j < i; j++) {
+    //         printf("v[%i]=%.16G\n",j,v[j]);
+    //     }
+    //     printf("\n");
+    // }
     return 0;    
 }
 
@@ -94,16 +108,28 @@ double cuadratura(int n, double metodo(int, double), double a, double b, double 
     return sum;
 }
 
-double f1(double x) {
+double f1_legendre(double x) {
     return 1 / (1 + x * x);
 }
 
-double f2(double x) {
+double f1_chebyshev(double x) {
+    return sqrt(1 - x * x) / (1 + x * x);
+}
+
+double f2_legendre(double x) {
+    return (pow(x, 8) - 2 * pow(x, 6) + 3 * pow(x, 4) - x * x + 5) / (sqrt(1 - x * x));
+}
+
+double f2_chebyshev(double x) {
     return pow(x, 8) - 2 * pow(x, 6) + 3 * pow(x, 4) - x * x + 5;
 }
 
-double f3(double x) {
+double f3_legendre(double x) {
     return fabs(x);
+}
+
+double f3_chebyshev(double x) {
+    return fabs(x) * sqrt(1 - x * x);
 }
 
 double trapecios(int N, double a, double b, double f(double)) {
