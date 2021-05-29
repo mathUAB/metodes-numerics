@@ -3,6 +3,7 @@
 
 #define TOL 1.e-7
 
+double omega(double metodo(int, double), double x);
 double legendre(int n, double x);
 double chebyshev(int n, double x);
 double derivative(int n, double f(int, double), double x);
@@ -10,36 +11,32 @@ double newton(double n, double f(int, double), double x0, int iter);
 void zeros(int n, double f(int, double), double v[]);
 void coeficientes(int n, double f(int, double), double v[], double A[]);
 double cuadratura(int n, double metodo(int, double), double a, double b, double f(double));
-double f1_legendre(double x);
-double f1_chebyshev(double x);
-double f2_legendre(double x);
-double f2_chebyshev(double x);
-double f3_legendre(double x);
-double f3_chebyshev(double x);
+double f1(double x);
+double f2(double x);
+double f3(double x);
 double trapecios(int N, double a, double b, double f(double));
 
 int main() {
     int N;
     printf("Introducir el numero maximo de nodos: ");
     scanf("%i",&N);
-    printf("EJERCICIO 1\n\t\t\tLegendre\t\tChebyshev\t\tTrapecios\nIntegral 1:\n");
+    printf("EJERCICIO 1\n\t\t\tChebyshev\t\tLegendre\t\tTrapecios\nIntegral 1:\n");
     for (int n = 2; n <= N; n += 2)
-        printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, legendre, -1, 1, f1_legendre), cuadratura(n, chebyshev, -1, 1, f1_chebyshev), trapecios(n, -1, 1, f1_legendre));
+        printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, chebyshev, -1, 1, f1), cuadratura(n, legendre, -1, 1, f1), trapecios(n, -1, 1, f1));
     printf("\nIntegral 2:\n");
     for (int n = 2; n <= N; n += 2)
-        printf("\t\tn = %i:  %.16G\t%.16G\n", n, cuadratura(n, legendre, -1, 1, f2_legendre), cuadratura(n, chebyshev, -1, 1, f2_chebyshev));
+        printf("\t\tn = %i:  %.16G\t%.16G\n", n, cuadratura(n, chebyshev, -1, 1, f2), cuadratura(n, legendre, -1, 1, f2));
     printf("\nIntegral 3:\n");
     for (int n = 2; n <= N; n += 2)
-        printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, legendre, -1, 1, f3_legendre), cuadratura(n, chebyshev, -1, 1, f3_chebyshev), trapecios(n, -1, 1, f3_legendre));
-    // for (int i = 2; i < 9; i += 2) {
-    //     double v[i];
-    //     zeros(i,legendre,v);
-    //     for (int j = 0; j < i; j++) {
-    //         printf("v[%i]=%.16G\n",j,v[j]);
-    //     }
-    //     printf("\n");
-    // }
+        printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, chebyshev, -1, 1, f3), cuadratura(n, legendre, -1, 1, f3), trapecios(n, -1, 1, f3));
     return 0;    
+}
+
+double omega(double metodo(int, double), double x){
+    if (metodo == legendre)
+        return 1;
+    else
+        return 1 / sqrt(1 - x * x);
 }
 
 double legendre(int n, double x) {
@@ -59,8 +56,6 @@ double chebyshev(int n, double x) {
 }
 
 double derivative(int n, double f(int, double), double x) {
-    if (n == 0)
-        return 0;
     return n * (- x * f(n, x) + f(n - 1, x)) / (1 - x * x);
 }
 
@@ -73,7 +68,7 @@ double newton(double n, double f(int, double), double x0, int iter) {
 
 void zeros(int n, double f(int, double), double v[]) { //v tiene longitud n y en la salida guarda los zeros de f.
     double h = 2. / (n * n), a = -1, b;
-    for (int numRoot = 0; numRoot < n; numRoot++, a = b) { // Calculate an initial aproximation of the roots of f
+    for (int numRoot = 0; numRoot < n; numRoot++, a = b) { // Calculate an initial aproximation of the roots of f and savi it in v[].
         b = a + h;
         while (f(n, a) * f(n, b) > 0) {
             a = b;
@@ -81,15 +76,15 @@ void zeros(int n, double f(int, double), double v[]) { //v tiene longitud n y en
         }
         v[numRoot] = (a + b) / 2;
     }
-    for (int numRoot = 0; numRoot < n; numRoot++) { // Computing the roots of f
+    for (int numRoot = 0; numRoot < n; numRoot++) { // Computing the roots of f.
         v[numRoot] = newton(n, f, v[numRoot], 7); //Newton con 7 iteraciones.
         if (fabs(v[numRoot]) < TOL)
             v[numRoot] = 0;
     }
 }
 
-void coeficientes(int n, double f(int, double), double v[], double A[]) {
-    if (f == legendre){
+void coeficientes(int n, double metodo(int, double), double v[], double A[]) {
+    if (metodo == legendre){
         for (int i = 0; i < n; i++)
             A[i] = 2 / ((1 - v[i] * v[i]) * pow(derivative(n, legendre, v[i]), 2));
     }else{
@@ -99,37 +94,24 @@ void coeficientes(int n, double f(int, double), double v[], double A[]) {
 }
 
 double cuadratura(int n, double metodo(int, double), double a, double b, double f(double)) {
-    double v[n], A[n];
+    double v[n], A[n], sum = 0;
     zeros(n, metodo, v);
     coeficientes(n, metodo, v, A);
-    double sum = 0;
     for (int i = 0; i < n; i ++)
-        sum += A[i] * (b - a) / 2 * f((v[i] * (b - a) + b + a) / 2);
+        sum += A[i] * (b - a) / 2 * f(((b - a) * v[i] + b + a) / 2) / omega(metodo, v[i]); //Caso particular a = -1, b = 1: sum += A[i] * f(v[i]) / omega(metodo, v[i]);
     return sum;
 }
 
-double f1_legendre(double x) {
+double f1(double x) {
     return 1 / (1 + x * x);
 }
 
-double f1_chebyshev(double x) {
-    return sqrt(1 - x * x) / (1 + x * x);
+double f2(double x) {
+    return (pow(x, 8) - 2 * pow(x, 6) + 3 * pow(x, 4) - x * x + 5) / sqrt(1 - x * x);
 }
 
-double f2_legendre(double x) {
-    return (pow(x, 8) - 2 * pow(x, 6) + 3 * pow(x, 4) - x * x + 5) / (sqrt(1 - x * x));
-}
-
-double f2_chebyshev(double x) {
-    return pow(x, 8) - 2 * pow(x, 6) + 3 * pow(x, 4) - x * x + 5;
-}
-
-double f3_legendre(double x) {
+double f3(double x) {
     return fabs(x);
-}
-
-double f3_chebyshev(double x) {
-    return fabs(x) * sqrt(1 - x * x);
 }
 
 double trapecios(int N, double a, double b, double f(double)) {

@@ -30,12 +30,12 @@
 \section{Ejercicio avanzado}\label{ejercicioavanzado}
 El objetivo de esta práctica es calcular las integrales
 $$I_1=\int_{-1}^1\frac{1}{1+x^2}\dd x,\qquad I_2=\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x,\qquad I_3=\int_{-1}^1|x|\dd x$$ mediante las fórmulas de cuadratura de Gau\ss-Chebyshev y de Gau\ss-Legendre con 2, 4 y 6 nodos y (cuando sea posible) también con el método de los trapecios.\par 
-Las fórmulas de cuadratura gaussiana són de la forma: 
+Las fórmulas de cuadratura gaussiana son de la forma: 
 \begin{equation}
     \int_a^b\omega(x)f(x)\dd x\approx\sum_{i=1}^na_if(x_i),
     \label{gauss}
 \end{equation}
-donde $x_i$ són las raíces del polinomio ortogonal de grado $n$ respecto a la función peso $\omega(x)$ y los $a_i$ son coeficientes que hacen que la fórmula sea exacta para polinomios de grado menor o igual que $2n-1$.
+donde $x_i$ son las raíces del polinomio ortogonal de grado $n$ respecto a la función peso $\omega(x)$ y los $a_i$ son coeficientes que hacen que la fórmula sea exacta para polinomios de grado menor o igual que $2n-1$.
 \subsection*{Cálculo de las raíces de los polinomios}
 Primero de todo necesitamos encontrar las raíces de los polinomios ortogonales de Chebyshev y Legendre de grado $n$. Los polinomios de Chebyshev $T_n(x)$ son ortogonales respecto de la función peso $\omega(x)=\frac{1}{\sqrt{1-x^2}}$ y están definidos en el intervalo $[-1,1]$ mediante la siguiente fórmula recurrente:
 $$T_0=1,\qquad T_1=x,\qquad T_{n+1}=2xT_n(x)-T_{n-1}\quad\forall n\geq 1.$$ Notemos que el polinomio $T_n(x)$ tiene grado $n$. Así pues calculando estos polinomios y sus raíces utilizando el método de la bisección juntamente con el método de Newton obtenemos los siguientes resultados:
@@ -57,7 +57,7 @@ $$T_0=1,\qquad T_1=x,\qquad T_{n+1}=2xT_n(x)-T_{n-1}\quad\forall n\geq 1.$$ Note
         & & & & $0.9807852804032304$ \\
         \hline
     \end{tabular}
-    \caption{Raíces de los polinomios ortogonales de Chebyshev de grados $n=2,4,6\text{ y }8$.}
+    \caption{Raíces de los polinomios ortogonales de Chebyshev de grados $n=2,4,6\text{ y }8$}
 \end{table}\par
 Por otra parte, los polinomios de Legendre $P_n(x)$ son ortogonales respecto de la función peso $\omega(x)=1$ y están definidos en el intervalo $[-1,1]$ mediante la siguiente fórmula recurrente:
 $$P_0=1,\qquad P_1=x,\qquad P_{n+1}=\frac{(2n+1)x}{n+1}P_n(x)-\frac{n}{n+1}P_{n-1}\quad\forall n\geq 1.$$ Notemos que, de forma similar como pasa con los polinomios de Chebyshev, el polinomio $P_n(x)$ tiene grado $n$. Así pues calculando estos polinomios y sus raíces utilizando el método de la bisección juntamente con el método de Newton obtenemos los siguientes resultados:
@@ -79,7 +79,7 @@ $$P_0=1,\qquad P_1=x,\qquad P_{n+1}=\frac{(2n+1)x}{n+1}P_n(x)-\frac{n}{n+1}P_{n-
         & & & & $0.9602898564975363$ \\
         \hline
     \end{tabular}
-    \caption{Raíces de los polinomios ortogonales de Legendre de grados $n=2,4,6\text{ y }8$.}
+    \caption{Raíces de los polinomios ortogonales de Legendre de grados $n=2,4,6\text{ y }8$}
 \end{table}
 \subsection*{Cálculo de los coeficientes $a_i$ de las fórmulas de cuadratura}
 El objetivo ahora es calcular los coeficientes $a_i$ de la fórmula \eqref{gauss}. Para ello imponemos que la fórmula \eqref{gauss} sea válida para $f(x)=x^k$, $k=0,\ldots,n-1$. Es decir, si $x_i$, $i=1,\ldots,n$ son las raíces de un polinomio ortogonal, entonces resulta el siguiente sistema de ecuaciones lineales en las variables $a_1,\ldots,a_n$:
@@ -167,7 +167,7 @@ Con los datos que tenemos ya podemos evaluar las integrales.
             $n=6$ & $16.56699250916492$ & $14.95101134114224$ \\
             \hline
         \end{tabular}
-        \caption{Aproximaciones de $\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x$ mediante los diferentes métodos expuestos u\-ti\-li\-zan\-do y $n$ puntos, para $n=2,4,6$}
+        \caption{Aproximaciones de $\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x$ mediante los diferentes métodos expuestos utilizando y $n$ puntos, para $n=2,4,6$}
     \end{table}\par
     Notemos que en este caso el método de los trapecios no es aplicable ya que la integral $I_2$ es impropia (aunque convergente) tanto en $x=-1$ como en $x=1$ y el método de los trapecios utiliza precisamente los valores de los dos extremos (en donde la función no está definida) para dar la aproximación de la integral.\par
     Mediante un CAS (\textit{Computer Algebra System}) hemos obtenido el valor exacto de la integral $I_2$ con 16 decimales. Éste es: $I_2=\frac{675}{128}\pi\approx 16.56699250916493$. Fijémonos que este valor es exactamente el mismo (excepto el último dígito debido a la aritmética en punto flotante) que el dado utilizando el método de Gau\ss-Chebyshev con $n=6$ nodos. En cambio utilizando el método de Gau\ss-Legendre no pasa lo mismo.\par
@@ -224,7 +224,7 @@ Aplicaremos ahora las fórmulas de cuadratura para calcular la longitud de la el
         $n=9$ & $2.006145090433641$ \\
         \hline
     \end{tabular}
-    \caption{Aproxiamción de la longitud de la elipse $\left(\frac{x}{2}\right)^2+(2y)^2=1$ cuando $y>0$ y $x\in[-1,1]$ utilizando el método de Gau\ss-Legendre y diferente número de nodos}
+    \caption{Aproximación de la longitud de la elipse $\left(\frac{x}{2}\right)^2+(2y)^2=1$ cuando $y>0$ y $x\in[-1,1]$ utilizando el método de Gau\ss-Legendre y diferente número de nodos}
 \end{table}\par
 Observamos que a partir de $n=6$ tenemos 6 cifras decimales exactas por lo que podemos concluir que la aproximación de la longitud deseada con 6 cifras decimales es: $$L(f,-1,1)=\int_{-1}^1\sqrt{1+\frac{x^2}{64\left[1-\frac{x^2}{4}\right]}}\dd x\approx 2.006145.$$
 \section*{Conclusiones} 
