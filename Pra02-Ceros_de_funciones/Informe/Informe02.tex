@@ -1,0 +1,332 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[left=1.6cm,right=1.6cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage{multirow}
+
+\renewcommand{\theenumi}{(\alph{enumi})}
+
+\title{\bfseries\Large PRÁCTICA 2: CEROS DE FUNCIONES}
+
+\author{Grupo 1\\Júlia Albero Pes, NIU:1566550\\Víctor Ballester Ribó, NIU:1570866}
+\date{\parbox{\linewidth}{\centering
+  Métodos numéricos\endgraf
+  Grado en Matemáticas\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  6 de Abril de 2021}}
+%\setlength{\parindent}{0pt}
+
+\begin{document}
+\newgeometry{top=6cm}
+\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\restoregeometry
+\section*{Problema 1}
+Consideramos la ecuación polinómica $x^3=x+40$. La solución de esta ecuación es $\alpha=3.51739351405281823$... Este valor se puede obtener a partir de la fórmula de Cardano $\alpha=\left(20+\frac{1}{9}\sqrt{32397}\right)^{1/3}+\left(20-\frac{1}{9}\sqrt{32397}\right)^{1/3}$. Si la calculamos utilizando simple y doble precisión, obtenemos $\alpha_s\approx3.5173626$ y $\alpha_d\approx3.517393514052728$ respectivamente, por lo que podemos observar que se produce un error de cancelación del orden de $10^{-5}$ y $10^{-13}$ respectivamente, provocado por el cálculo del término $(20-\frac{1}{9}\sqrt{32397})^{1/3}$. Para evitar este problema se nos propone calcular $\alpha$ mediante el método iterativo de Newton, que con 5 iteraciones nos da un valor de $\alpha_s\approx3.5173936$ (en precisión simple) y con 6 iteraciones nos da un valor de $\alpha_d\approx3.517393514052818$ (en precisión doble), habiendo utilizado en ambos casos la aproximación inicial $x_0=2$.\par
+Pasemos ahora a estudiar la raíz de la ecuación $f(x)=x^3-x-400$. Ésta es $\alpha=7.4133027258578981873...$ que nuevamente se puede calcular mediante la fórmula de Cardano:
+$$\alpha=\left(200+\sqrt{\frac{1079999}{27}}\right)^{1/3}+\left(200-\sqrt{\frac{1079999}{27}}\right)^{1/3}$$ Calculando este valor en precisión doble, obtenemos $\alpha\approx7.413302725859883$, de donde deducimos que efectivamente $\alpha$ se encuentra en el intervalo $[2,8]$. Este mismo resultado lo podemos obtener aproximándolo a partir de los distintos procesos iterativos estudiados, ya que de nuevo se acumulan errores de cancelación del orden de $10^{-14}$. Hemos utilizado los métodos iterativos de la bisección (en el intervalo $[2,8]$), de la secante (con aproximaciones iniciales $x_0=2$, $x_1=8$) y de Newton (con aproximación inicial $x_0=2$). Veamos sus respectivos resultados en la siguiente tabla:\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+         Método& Valores iniciales & Solución & Número de iteraciones  \\
+         \hline
+         Cardano & - &7.413302725859883& -\\
+         \hline
+         Bisección & $[2,8]$ & 7.413302725857898& 50\\
+         \hline
+         Secante & $x_0=2$, $x_1=8$ &7.413302725857898& 7\\
+         \hline
+         Newton & $x_0=2$ &7.413302725857898& 10\\
+         \hline
+    \end{tabular}
+    \caption{Cálculo de $\alpha$ mediante los distintos métodos iterativos}
+    \label{pro1-tab1}
+\end{table}
+Sabemos que el orden de convergencia de una sucesión $(x_n)$ con $\displaystyle\lim_{n\to\infty}x_n=\ell$ es el valor $p\in\mathbb{R}^+$ tal que $$\lim_{n\to\infty}\frac{|x_n-\ell|}{|x_{n-1}-\ell|^p}=C\;(\ne0,\infty).$$
+Es bien sabido que para el cálculo de raíces simples el método de la bisección converge de manera lineal, el método de la secante tiene orden de convergencia al menos $\varphi:=\frac{1+\sqrt{5}}{2}$ y el método de Newton converge al menos de manera cuadrática. Para estos dos últimos métodos, como $f''(\alpha)\ne0$, tenemos que el método de la secante tiene orden de convergencia $\varphi$ y el método de Newton converge de manera cuadrática. Como en nuestro caso no conocemos a priori el valor de $\alpha$, hemos optado por comprobar el orden de convergencia teórico haciendo los cocientes $\frac{e_k}{(e_{k-1})^p}$, ($p=1,\varphi,2$, según el método), donde $e_k=|x_k-x_{k-1}|$. Los resultados de los últimos 5 cocientes $\frac{e_k}{(e_{k-1})^p}$ de cada método se exponen en la siguiente tabla:\par        
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c||c|c||c|c|}
+        \hline
+        \multicolumn{2}{|c||}{Bisección} & \multicolumn{2}{c||}{Secante} & \multicolumn{2}{c|}{Newton}\\
+        \hline
+        $e_{46}/e_{45}$ & 0.5 & $e_3/(e_2)^\varphi$ & 0.1290582475807308 & $e_6/(e_5)^2$ & 0.138489223669055 \\	
+        \hline
+        $e_{47}/e_{46}$ & 0.5 & $e_4/(e_3)^\varphi$ & 0.5133544839807045 & $e_7/(e_6)^2$ & 0.1457762209428173 \\	
+        \hline
+        $e_{48}/e_{47}$ & 0.5 & $e_5/(e_4)^\varphi$ & 0.1862009512014287 & $e_8/(e_7)^2$ & 0.1382982694251124 \\	
+        \hline
+        $e_{49}/e_{48}$ & 0.5 & $e_6/(e_5)^\varphi$ & 0.3808606944869903 & $e_9/(e_8)^2$ & 0.1357991693091439 \\
+        \hline
+        $e_{50}/e_{49}$ & 0.5 & $e_7/(e_6)^\varphi$ & 0.246984392805613 & $e_{10}/(e_9)^2$ & 0.1357299683284017 \\
+        \hline
+    \end{tabular}
+    \caption{Valores de los cocientes $\frac{e_k}{(e_{k-1})^p}$ utilizando los diferentes algoritmos para distintos valores de $k$ justo antes de llegar a la convergencia y distintos valores de $p$ según el método empleado}
+    \label{tab:my_label3}
+\end{table}
+Observemos que en general los valores son estables en los tres métodos, con lo cual podemos afirmar que los órdenes de convergencia son correctos. Notemos también que aun teniendo el método de Newton un orden de convergencia más grande que el método de la secante, éste necesita más iteraciones para llegar a la convergencia. Esto se debe a que el valor inicial $x_0=2$ está muy lejos del límite de la iteración. Por ejemplo, si cambiamos la aproximación inicial por $x_0=8$, vemos que el método de Newton necesita tan solo 4 iteraciones para llegar al valor expuesto en la tabla \ref{pro1-tab1}.\par
+El problema del método de Newton es que según con qué aproximación inicial, éste puede no converger. Es por esto que una buena estrategia para obtener las raíces de este tipo de problemas (es decir cuando buscamos raíces simples de un polinomio) es acotar el intervalo estudiado $[2,8]$ mediante el proceso de la bisección para encontrar así un intervalo relativamente pequeño donde aplicar, con completa seguridad de convergencia, el método de Newton, que converge mucho más rápido que los demás estudiados en la práctica.
+\newpage
+\section*{Problema 2}
+El objetivo de este problema es calcular una raíz simple $\alpha$ de una función $f\in\mathcal{C}^1$. Para esto, consideremos la iteración $$x_{k+1}=x_k-b_kf(x_k),\quad\text{donde}\quad b_{k+1}=b_k(2-f'(x_{k+1})b_k),$$ partiendo de un valor inicial $x_0$ suficientemente cerca de $\alpha$ y $b_0=\frac{1}{f'(x_0)}$.\par Aplicando la iteración anterior a la función $f(x)=x^3-x-400$, obtenemos los siguientes resultados:\par
+% haciendo unas cuantas iteraciones observamos que el cero de $f$, $\alpha$, es $\alpha\approx7.413302725857898$.\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        
+        \hline
+        $x_0$ & 8 \\
+        \hline
+        $x_1$ & 7.455497382198953 \\
+        \hline
+        $x_2$ & 7.414275549385014 \\
+        \hline
+        $x_3$ & 7.413303637276004 \\
+        \hline
+        $x_4$ & 7.413302725859051 \\
+        \hline
+        $x_5$ & 7.413302725857898 \\
+        \hline
+    \end{tabular}
+\end{table}
+Se puede ver que $x_6=7.413302725857898$, y como $x_6=x_5$, se deduce que $\alpha\approx7.413302725857898$.\par
+Para estimar el orden de convergencia numérico, como en el problema 1, hemos realizado los cocientes $\frac{e_k}{(e_{k-1})^p}$ para varios valores de $p$. Los resultados se exponen en la siguiente tabla:\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        & \multicolumn{4}{c|}{$x_0=10$} \\
+        \cline{2-5}
+        & $p=1$ & $p=2$ & $p=3$ & $p=4$\\
+        \hline
+        $e_2/e_1^p$ & 0.2509752019778334 & 0.1271891277819867 & 0.06445686306239666 & 0.03266542721297729	\\
+        \hline
+        $e_3/e_2^p$ & 0.2222841367716762 & 0.4488454580167829 & 0.9063275864315583 & 1.830094700203337\\	
+        \hline
+        $e_4/e_3^p$ & 0.07332455454625761 & 0.6660844991003262 & 6.050750157122867 & 54.96536477484958\\	
+        \hline
+        $e_5/e_4^p$ & 0.007808322171625144 & 0.9673601313991852 & 119.8446482166455 & 14847.35543669483\\	
+        \hline
+        $e_6/e_5^p$ & $8.646289637647008\times10^{-05}$ & 1.371837012569457 & 21765.83098559766 & 345340878.072873\\
+        \hline
+        \hline
+        & \multicolumn{4}{c|}{$x_0=8$} \\
+        \cline{2-5}
+        & $p=1$ & $p=2$ & $p=3$ & $p=4$\\
+        \hline
+        $e_2/e_1^p$ & 0.07570548141790695 & 0.1390360283732714 & 0.2553450136470657 & 0.4689509385248993 \\
+        \hline
+        $e_3/e_2^p$ & 0.02357760542565788 & 0.5719688770773259 & 13.87538685286013 & 336.6028608065255 \\	
+        \hline
+        $e_4/e_3^p$ & 0.0009377565574246662 & 0.9648573659405989 & 992.741377534561 & 1021431.226478186 \\	
+        \hline
+        $e_5/e_4^p$ & $1.264904700739905\times10^{-06}$ & 1.38784416499199 & 1522732.443934818 & 1670730874762.935 \\	
+        \hline
+        $e_6/e_5^p$ & 0 & 0 & 0 & 0\\
+        \hline
+    \end{tabular}
+    \caption{Valores de los cocientes $\frac{e_k}{(e_{k-1})^p}$ para $2\leq k\leq 6$ i $p=1,2,3,4$ habiendo tomado $x_0=10$ y $x_0=8$}
+    \label{pro2-tab2}
+\end{table}
+Observando los valores de la tabla, es fácil deducir que el orden de convergencia tiene que estar entre 1 y 2. Refinando un poco más la precisión de $p$ obtenemos los resultados que se muestran en la tabla \ref{pro2-tab3}.\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c||c|c|}
+        \hline
+        & \multicolumn{2}{c||}{$x_0=10$} & \multicolumn{2}{c|}{$x_0=8$}\\
+        \cline{2-5}
+        & $p=1.8$ & $p=1.9$ & $p=1.8$ & $p=1.9$\\
+        \hline
+        $e_2/e_1^p$ & 0.1457089248852026 & 0.1361344595104412 & 0.1231196430957435 & 0.1308360278775187\\
+        \hline
+        $e_3/e_2^p$ & 0.3899951103070174 & 0.4183868232987972 & 0.3022719567322813 & 0.4158006152762749\\	
+        \hline
+        $e_4/e_3^p$ & 0.4284235625615174 & 0.5341968682719559 & 0.2409841700791757 & 0.4821984566296064\\	
+        \hline
+        $e_5/e_4^p$ & 0.3689623845435172 & 0.5974274021112299 & 0.08595756896380585 & 0.3453921112638709\\	
+        \hline
+        $e_6/e_5^p$ & 0.1982476138629572 & 0.5215011163466305 & 0 & 0\\
+        \hline
+    \end{tabular}
+    \caption{Valores de los cocientes $\frac{e_k}{(e_{k-1})^p}$ para $2\leq k\leq 6$ i $p=1.8,1.9$ habiendo tomado $x_0=10$ y $x_0=8$}
+    \label{pro2-tab3}
+\end{table}
+Podemos observar que, tanto si partimos de $x_0=10$ como si lo hacemos de $x_0=8$, los valores de $\frac{e_k}{(e_{k-1})^p}$ para $p=1.9$ están relativamente cerca entre si. Es por esto que afirmamos que el orden de convergencia de la sucesión $(x_n)$ es un número cercano al 1.9.\par
+No obstante, cabe destacar dos hechos. El primero es que, si bien la sucesión $(x_n)$ no converge de inmediato en el sexto iterado, observamos que $e_6=0$ y por lo tanto $e_6/e_5^p=0$, si partimos desde $x_0=8$. Esto se debe a que $|x_6-x_5|<10^{-16}$. Ahora bien, en precisión doble esto significa que $|x_6-x_5|\approx0$ y de aquí sale el 0 de las tablas.\par El segundo hecho a destacar es que al variar ligeramente la aproximación inicial, obtenemos unos resultados distintos en los cocientes $\frac{e_k}{(e_{k-1})^p}$. Podría ocurrir que precisando más los valores de $p$ encontráramos dos posibles órdenes de convergencia (uno para $x_0=10$ y el otro para $x_0=8$). Esto se debe a que al estar trabajando en precisión finita cualquier operación, ya sea por ejemplo calcular el valor de la función o el de su derivada, es muy sensible a tener algún tipo de error de cancelación y, por lo tanto, dar un resultado final ligeramente distinto. Es por esto que los resultados aproximados de los órdenes de convergencia dependen, en parte, de la aproximación inicial con la que se empiece la iteración.
+\newpage
+\section*{Problema 3}
+Sea la ecuación $f(x)=0$ con $f\in\mathcal{C}^1$ y $\alpha$ una raíz simple. Consideremos la iteración (conocida como método de Halley):
+\begin{equation}
+    x_{k+1}=x_k-\frac{2f(x_kf'(x_k)}{2(f'(x_k))^2-f(x_k)f''(x_k)},
+\end{equation}
+siendo $x_0$ una aproximación inicial de $\alpha$. Si aplicamos este método a la ecuación $x^3=x+400$, considerando $f(x)=x^3-x-400$, obtenemos los resultados que se muestran en la siguiente tabla, donde exponemos los valores de la sucesión $(x_k)$ y los cocientes $e_k/(e_{k-1})^p$ en cada iteración, como en los ejercicios anteriores.\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c||c|c|c|}
+         \hline
+         $k$ & $x_k$ & $e_k/(e_{k-1})^2$ &$e_k/(e_{k-1})^3$&$e_k/(e_{k-1})^4$ \\
+         \hline
+         0& 2 & - & - & -\\ 
+         \hline
+         1 & 3.744064386317907 & - & -& -\\
+         \hline
+         2 & 6.30506836726749 & 0.8419479148814734 & 0.482750477268219 & 0.2767962473492211\\
+         \hline
+         3 & 7.392360605150256 & 0.1657775742564976 & 0.0647314785490476 & 0.02527582113515625\\
+         \hline
+         4 & 7.4133002612248415 & 0.01771437063767772 & 0.01629218899987007 & 0.0149841858814288\\
+         \hline
+         5 & 7.413302725857898 & 0.0002590466482953587 & 0.01236971447298043 & 0.5906651838575557 \\
+         \hline
+    \end{tabular}
+    \caption{Valores de la sucesión $(x_k)$ y de los cocientes $e_k/(e_{k-1})^p$ para $p=2,3,4$ i $k=0,\ldots,5$ utilizando el método de Halley}
+    \label{tab:my_label4}
+\end{table}
+Observemos que el método de Halley es un proceso iterativo mucho mejor que los utilizados en los ejercicios anteriores, en términos del número de iteraciones $k$, pues con $k=5$ le es suficiente para calcular el valor de la raíz real $\alpha\approx7.13302725857898$, con aproximación inicial $x_0=2$, mientras que utilizando el método de Newton (con aproximaciones inicial $x_0=2$) se necesitaban 10 iteraciones y utilizando el método de la secante (con aproximaciones iniciales $x_0=2$ y $x_1=8$), 7.\par
+Además, el método de Halley tiene orden de convergencia 3. Si nos fijamos en la tercera columna de la tabla, parece que $\frac{e_k}{(e_{k-1})^2}$ converge a cero y esto nos indicaría que como mínimo el método de Halley es de orden cuadrático. En la quinta columna, es decir para $p=4$, la fracción no converge a un número particular, mientras que en la cuarta columna, para $p=3$, los valores de $\frac{e_k}{(e_{k-1})^3}$ son bastante estables.\par
+Teniendo en cuenta que el número de iteraciones y el número de fracciones $e_k/e_{k-1}$ varía según el valor inicial introducido $x_0$, veamos mejor el valor aproximado $\frac{e_k}{(e_{k-1})^3}\approx0.012...$ para $x_0=5$ y $x_0=8$.\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        & \multicolumn{3}{c|}{$x_0=5$} \\
+        \cline{2-4}
+        & $p=2$ & $p=3$& $p=4$  \\
+        \hline
+        $e_2/e_1^p$ & 0.05924315650883084 & 0.02766586787545595 & 0.01291963984376988 \\	
+        \hline
+        $e_3/e_2^p$ & 0.003547694146658812 & 0.01305930902357936 & 0.04807222526044405 \\	
+        \hline
+        $e_4/e_3^p$ & $3.226289466961599\times10^{-6}$ & 0.01232268121333699 & 47.06597899553437 \\
+        \hline
+        \hline
+        & \multicolumn{3}{c|}{$x_0=8$} \\
+        \cline{2-4}
+        & $p=2$ & $p=3$ & $p=4$ \\
+        \hline
+        $e_2/e_1^p$ & 0.006451718907859682 & 0.01103814272470858 & 0.01888498190189394 \\	
+        \hline
+        $e_3/e_2^p$ & $2.713463848330975\times10^{-5}$ & 0.01231089813191774 & 5.585414852962857 \\	
+        \hline
+    \end{tabular}
+    \caption{Valores de los distintos $\frac{e_k}{(e_{k-1})^p}$ para $p=2,3,4$ y para $x_0=5$ y $x_0=8$ respectivamente}
+    \label{tab:my_label5}
+\end{table}
+Efectivamente, se cumple que el método iterativo de Halley tiene orden 3.
+\newpage
+\section*{Problema 4}
+Para cada $k=1,2,3,\ldots$ definimos la iteración $p_k=\frac{2a_k^2}{s_k}$, donde 
+\begin{equation}
+    a_k=\frac{a_{k-1}+b_{k-1}}{2},\quad b_k=\sqrt{a_{k-1}b_{k-1}},\quad c_k=a_k^2-b_k^2,\quad s_k=s_{k-1}-2^kc_k,
+    \label{pro4-eq1}
+\end{equation} tomando valores iniciales $a_0=1$, $b_0=\frac{1}{\sqrt{2}}$ y $s_0=\frac{1}{2}$. Haciendo los cocientes de error como en los ejercicios anteriores obtenemos los siguientes resultados:\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c||c|c|c|}
+        \hline
+        $k$ & $p_k$ & $e_k/e_{k-1}$ & $e_k/(e_{k-1})^2$ & $e_k/(e_{k-1})^3$ \\
+        \hline
+        0 & 4 & - & - & - \\
+        \hline
+        1 & 3.187672642712109 & - & - & - \\
+        \hline
+        2 & 3.141680293297657 & 0.05661799889148908 & 0.06969850071345499 & 0.08580100139204551 \\
+        \hline
+        3 & 3.14159265389546 & 0.001905521316316021 & 0.04143126716890991 & 0.9008295444000748\\
+        \hline
+        4 & 3.141592653589831 & $3.487345279592667\times10^{-6}$ & 0.03979197931731506 & 454.042112564941\\
+        \hline
+        5 & 3.14159265358988 & 0.0001598337728762087 & 522966.8925891721 & 1711117530562180\\
+        \hline
+        6 & 3.141592653589978 & 2 & 40941814794277.23 & $8.381160993244493\times10^{26}$\\
+        \hline
+        7 & 3.141592653590173 & 2 & 20470907397138.62 & $2.095290248311123\times10^{26}$\\
+        \hline
+    \end{tabular}
+    \caption{Valores de la sucesión $(p_k)$ y de los cocientes $e_k/(e_{k-1})^p$ para $p=1,2,3$ y diferentes valores de $k$}
+    \label{pro4-1}
+\end{table}
+En esta tabla vemos unos resultados muy sorprendentes. Observando los tres primeros valores de los cocientes $e_k/(e_{k-1})^p$, vemos que los números son más estables cuando $p=2$, con lo que concluimos que el orden de convergencia de la sucesión $(p_k)$ es 2. Sin embargo, a partir de la cuarta fracción vemos que los números crecen desmesuradamente. Estudiemos el porqué de este comportamiento.\par
+No es difícil ver que las sucesiones $(a_k)$ y $(b_k)$ son siempre convergentes independientemente de los valores iniciales $a_0$ y $b_0$. En particular convergen siempre al mismo valor. Por lo tanto, debido a la precisión finita de los ordenadores, existirá un $k_1\in\mathbb{N}$ con el cual tendremos que $a_k=a_{k+1}$ y $b_k=b_{k+1}$, $\forall k\geq k_1$. Como consecuencia tendremos también que $c_k=c_{k+1}$ $\forall k\geq k_1$. Esto implica que a partir de este $k_1$, las iteraciones de \eqref{pro4-eq1} quedarán reducidas únicamente a la que involucra $s_k$ y $s_{k-1}$. Como el segundo término de esta ecuación ($2^kc_k$) sigue variando para cada $k$, $s_k$ varía y en consecuencia $p_k$ se va alejando de $\pi$ (su límite teórico), ya que el término de su numerador $(2a_k^2)$ es constante. A esto se debe que apreciemos estas diferencias muy significativas en los cálculos de las fracciones $e_k/(e_{k-1})^p$ a partir de, en este caso, $k_1=5$.
+\newpage
+\section*{Problema 5}
+El objetivo de este problema es obtener una aproximación de la raíz cuadrada de un número utilizando la expresión
+\begin{equation}
+    \sqrt{1+x}=f(x)\sqrt{1+g(x)}.
+    \label{pro5-1}
+\end{equation}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\alph{enumi})}
+    \item Queremos encontrar dos funciones lineales $p(x)=ax+b$ y $q(x)=cx+d$, tales que el desarrollo de MacLaurin de $g(x):=p(x)-\sqrt{1+x}q(x)$ tenga los tres primeros términos nulos, es decir, que se cumpla $g(0)=g'(0)=g''(0)=0$. Para esto, planteamos el siguiente sistema de ecuaciones:
+    $$\left\{\begin{array}{l}
+        g(x)=ax+b-\sqrt{1+x}(cx+d)  \\
+        g'(x)=a-c\sqrt{1+x}-\frac{cx+d}{2\sqrt{1+x}}  \\
+        g''(x)=-\frac{c}{\sqrt{1+x}}+\frac{cx+d}{4(1+x)^{3/2}} 
+    \end{array}\right.\iff\left\{\begin{array}{l}
+        g(0)=b-d=0  \\
+        g'(0)=a-c-\frac{d}{2}=0  \\
+        g''(0)=-c+\frac{d}{4}=0
+    \end{array}\right.\iff\left\{\begin{array}{l}
+        a=\frac{3}{4}d  \\
+        b=d  \\
+        c=\frac{d}{4} \\
+        d=d
+    \end{array}\right.$$
+    Poniendo por ejemplo $d=4$, obtenemos $p(x)=3x+4$ y $q(x)=x+4$. Por lo tanto, tenemos que $f(x):=\frac{p(x)}{q(x)}=\frac{3x+4}{x+4}$.
+    \item Usando la expresión \eqref{pro5-1} y teniendo en cuenta que $a_0=x$, $a_{n+1}=g(a_n)$ y $b_n=f(a_n)$ tenemos que: 
+    \begin{multline}
+        \sqrt{1+x}=\sqrt{1+a_0}=f(a_0)\sqrt{1+g(a_0)}=b_0\sqrt{1+a_1}=b_0f(a_1)\sqrt{1+g(a_1)}=b_0b_1\sqrt{1+a_2}=\cdots=\\=\left[\prod_{j=0}^kb_j\right]\sqrt{1+a_{k+1}}
+        \label{pro5-2}
+    \end{multline}
+    \setcounter{enumi}{3}
+    \item Para $x>0$ tenemos que $$g(x)=\frac{1+x}{f(x)^2}-1=\frac{(1+x)(x+4)^2}{(3x+4)^2}-1=\frac{x^3}{(3x+4)^2}\leq\frac{1}{9}x.$$ Así pues, por definición $g(x)=O(x)$ y, por lo tanto, el $n$ en cuestión es $n=1$.
+    \item Para ver que $g(x)$ es contractiva para $x>0$ veremos que $|g'(x)|<1/3$ $\forall x>0$. En efecto:
+    $$g'(x)=\frac{3x^2(x+4)}{(3x+4)^3}\leq\frac{3x^2(3x+4)}{(3x+4)^3}=\frac{3x^2}{(3x+4)^2}<\frac{3x^2}{(3x)^2}=\frac{1}{3}.$$
+    Por lo tanto, por el teorema del valor medio tenemos que $$|g(y)-g(x)|=|g'(\xi)||y-x|<\frac{1}{3}|y-x|,$$ donde $y\geq x>0$ y $\xi\in(x,y)$. Es decir, $g(x)$ es contractiva para $x>0$.
+    \item\label{f} Por la ecuación \eqref{pro5-2} tenemos que 
+    \begin{multline}
+    \sqrt{1+x}=\left[\prod_{j=0}^kb_j\right]\sqrt{1+a_{k+1}}\iff\sqrt{1+x}-\prod_{j=0}^kb_j=\left[\prod_{j=0}^kb_j\right]\left(\sqrt{1+a_{k+1}}-1\right)=\\=\frac{\sqrt{1+x}}{\sqrt{1+a_{k+1}}}\left(\sqrt{1+a_{k+1}}-1\right)=\sqrt{1+x}\left(1-\frac{1}{\sqrt{1+a_{k+1}}}\right).
+    \label{pro5-3}
+    \end{multline}
+    Ahora bien, notemos que para todo $x\in\mathbb{R}$ se cumple $\frac{1}{\sqrt{1+x}}\geq1-\frac{x}{2}$. Por lo tanto, usando esta desigualdad deducimos de la ecuación \eqref{pro5-3}: $$\left|\sqrt{1+x}-\prod_{j=0}^kb_j\right|=\sqrt{1+x}\left(1-\frac{1}{\sqrt{1+a_{k+1}}}\right)\leq\sqrt{1+x}\left(1-\left(1-\frac{a_{k+1}}{2}\right)\right)=\frac{a_{k+1}}{2}\sqrt{1+x}.$$
+    \item Elegimos $f$ como $f(x):=\frac{7x^3+56x^2+112x+64}{x^3+24x^2+80x+64}$. Notemos que $f$ es una aproximación de Padé de la función $\sqrt{1+x}$. Si $g(x)=\frac{1+x}{f(x)^2}-1$, tenemos que $g'(x)=\frac{x^7}{(7x^3 + 56x^2 + 112x + 64)^2}<\frac{1}{49}$ si $x>0$. Y en consecuencia del teorema del valor medio, $g$ es contractiva para $x>0$. Ahora bien, si calculamos los primeros términos de la sucesión $(a_k)$ obtenemos los resultados expuestos en la tabla \ref{pade}.\par
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{|c|c|}
+            \hline
+            $k$ & $a_k$ \\
+            \hline
+            \hline
+            0 & 1\\
+            \hline
+            1 & $\approx1.7507\times10^{-5}$ \\
+            \hline
+            2 & $\approx1.2304\times10^{-37}$ \\
+            \hline
+            3 & $\approx1.0422\times10^{-262}$ \\
+            \hline
+            4 & $\approx3.2600\times10^{-1838}$ \\
+            \hline
+        \end{tabular}
+        \caption{Primeros valores de la sucesión $(a_k)$ empezando por $a_0=1$}
+        \label{pade}
+    \end{table}
+    En particular, aplicando el apartado \ref{f} tenemos que \begin{equation}
+        \left|\sqrt{2}-b_0b_1b_2\right|\leq\frac{a_3}{2}\sqrt{2}< a_3<10^{-261}.
+        \label{sqrt(2)}
+    \end{equation}
+    \item La conclusión principal de este ejercicio es que hemos sido capaces de calcular la raíz cuadrada de un número positivo a partir de sumas y productos de funciones. En particular, estas funciones ($f$ y $g$) son funciones cocientes de polinomios, por lo que resulta muy sencillo evaluarlas. De hecho, solamente debemos evaluar 5 veces este tipo de funciones para obtener tal aproximación como la de \eqref{sqrt(2)}. Notemos también que este algoritmo lo podemos extender para raíces $k$-ésimas. En efecto, si consideramos la expresión 
+    \begin{equation}
+        \sqrt[k]{1+x}=f(x)\sqrt[k]{1+g(x)}
+    \end{equation}
+    y procedemos de forma análoga para encontrar una $f$ que sea una aproximación de Padé de la función $\sqrt[k]{1+x}$ y definimos $g(x):=\frac{1+x}{f(x)^k}-1$, obtendremos finalmente que $$\left|\sqrt[k]{1+x}-\prod_{j=0}^kb_j\right|\leq\frac{a_{k+1}}{k}\sqrt[k]{1+x},\quad\text{para }x>0.$$
+\end{enumerate}
+\newpage
+\section*{Conclusiones} 
+La conclusión principal de esta práctica es que, si bien teóricamente un algoritmo para calcular la raíz de una función tiene un orden de convergencia fijo, en la práctica esto no pasa ya que debido a las inexactitudes de los cálculos trabajando en precisión finita, obtenemos que el orden de convergencia puede variar ligeramente si se modifica la aproximación o aproximaciones iniciales del algoritmo. Es por esto que no es posible determinar con total certeza el orden de convergencia numérico de un algoritmo.\par Por otra parte, en el problema 4 hemos observado que, a partir de una cierta iteración, se han empezado a producir errores de cancelación en las sucesiones intermedias afectando así a la sucesión final y por consiguiente al cálculo de los ordenes (aproximados) de convergencia, dando de esta manera resultados muy contaminados. 
+\end{document}

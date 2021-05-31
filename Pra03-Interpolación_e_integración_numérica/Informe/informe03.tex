@@ -1,0 +1,201 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[left=1.8cm,right=1.8cm,top=1.7cm,bottom=1.7cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage{multirow}
+\usepackage{caption,subcaption}
+
+\renewcommand{\labelenumii}{\alph{enumii})}
+\title{\bfseries\Large PRÁCTICA 3: INTERPOLACIÓN E\\INTEGRACIÓN NUMÉRICA}
+
+\author{Grupo 1\\Júlia Albero Pes, NIU:1566550\\Víctor Ballester Ribó, NIU:1570866}
+\date{\parbox{\linewidth}{\centering
+  Métodos numéricos\endgraf
+  Grado en Matemáticas\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  10 de mayo de 2021}}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+\newgeometry{top=6cm}
+\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\restoregeometry
+\section*{Problema 1}
+El objetivo de este problema es interpolar la función $f(x)=\frac{1}{1+25x^2}$ en el intervalo $[-1,1]$ mediante funciones polinómicas a partir de dos métodos distintos: usando nodos equidistantes y nodos de Chebyshev como abscisas de soporte.\par Los siguientes dos gráficos muestran la función $f(x)$ juntamente con los polinomios interpoladores que a priori la aproximan.
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{image1.pdf}
+        \caption{Nodos equidistantes}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{image2.pdf}
+        \caption{Nodos de Chebyshev}
+    \end{subfigure}
+    \caption[Caption for LOF]{Polinomios interpoladores usando $n$ nodos equidistantes o de Chebyshev para $n=4,8,16$\footnotemark}
+    \label{pro1-0}
+\end{figure}\par
+\footnotetext{El caso $n=32$ no se ha añadido debido al hecho de que en el caso de nodos equidistantes la función oscila mucho y dificulta la visión del resto del gráfico. En el caso de nodos de Chebyshev, todo lo contrario: la función aproxima tan bien a $f(x)$ que apenas se puede distinguir una de otra (en la escala del gráfico). Para un entendimiento cuantitativo, véase la tabla \ref{pro1-1}.}
+Notemos que, si bien los polinomios interpoladores con nodos de Chebyshev a medida que aumentamos $n$ mejora la aproximación, para los polinomios interpoladores con nodos equidistantes esto no ocurre. De hecho, a medida que aumentamos $n$, aumenta el error entre $f(x)$ y el polinomio. Éste es el llamado fenómeno de Runge y es debido al hecho de que la magnitud de la derivada $n$-ésima crece rápido a medida que $n$ crece y la separación entre nodos equidistantes no ayuda lo suficiente para ``frenar'' el crecimiento. Matemáticamente hablando, sabemos que el error de interpolación $E(n)$ entre $f(x)$ y un polinomio interpolador $P_n$ de grado $n$ satisface:
+\begin{equation}
+   E(n)=\max|f(x)-P_n(x)|\leq\frac{\max\limits_{x\in[-1,1]}\left|f^{(n+1)}(x)\right|}{(n+1)!}|\omega_n(x)|,\quad\text{donde }\omega_n(x)=\prod_{i=0}^n(x-x_i).
+   \label{eq1}
+\end{equation}Aquí $\{x_i\}_{i=0}^n$ son los nodos de interpolación. Para nodos equidistantes sabemos que $\max\limits_{x\in[-1,1]}\omega_n(x)\leq\frac{h^{n+1}n!}{4}$, donde $h=\frac{1-(-1)}{n}=\frac{2}{n}$ y para nodos de Chebyshev tenemos que $\max\limits_{x\in[-1,1]}\omega_n(x)\leq\frac{1}{2^n}$. Es decir: 
+\begin{gather*}
+    \text{Error usando nodos equidistantes:}\quad E_e(n)=\max|f(x)-P_n(x)|\leq\frac{2^{n-1}}{n^{n+1}(n+1)}\max\limits_{x\in[-1,1]}\left|f^{(n+1)}(x)\right|\\
+    \text{Error usando nodos de Chebyshev:}\quad E_c(n)=\max|f(x)-P_n(x)|\leq\frac{1}{2^n(n+1)!}\max\limits_{x\in[-1,1]}\left|f^{(n+1)}(x)\right|
+\end{gather*}
+De estos resultados observamos inmediatamente que si la magnitud de $f^{(n+1)}(x)$ es lo suficientemente grande como sucede en este problema, los resultados usando nodos equidistantes quedan mucho más afectados que los resultados usando nodos de Chebyshev, ya que $$\lim_{n\to\infty}\frac{\frac{2^{n-1}}{n^{n+1}(n+1)}}{\frac{1}{2^n(n+1)!}}=\lim_{n\to\infty}\frac{2^{2n-1}n!}{n^{n+1}}=\infty.$$\par Una interpretación más cuantitativa de este fenómeno la podemos observar en la tabla \ref{pro1-1}, donde exponemos el error máximo entre $f(x)$ y cada polinomio de interpolación evaluado en los puntos $x_k=-0.989+k\cdot0.011$, $k=0,\ldots,180$.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & $E_e(n)$ & $E_c(n)$ \\
+        \hline 
+        $n=4$ & 0.4383325637382423 & 0.4018910383430822 \\
+        \hline
+        $n=8$ & 1.044314386265563 & 0.1707166541760645 \\
+        \hline
+        $n=16$ & 14.39385128500339 & 0.03253822115800359 \\
+        \hline
+        $n=32$ & 4905.44713663365 & 0.001393541945741261 \\
+        \hline
+    \end{tabular}
+    \caption{Errores de interpolación usando $n+1$ nodos con los dos métodos comentados y $n=4, 8, 16, 32$}
+    \label{pro1-1}
+\end{table}\par
+Observando los valores de la tabla, deducimos que $E_e(n)\to\infty$ y $E_c(n)\to0$ cuando $n\to\infty$.
+\newpage
+\section*{Problema 2}
+Dada la función de Bessel de primera especie de orden cero $J_0$, queremos encontrar la única raíz de esta función en el intervalo $[1.9,3.0]$. Efectivamente, la raíz existe ya que al ser $J_0$ una función derivable, en particular es continua, y como $J_0(1.9)\cdot J_0(3.0)<0$, por el Teorema de Bolzano existe un cero en el intervalo. Además como es estrictamente monótona, si hubiese otra raíz, por el Teorema de Rolle tendríamos un cero en la derivada, cosa que no es posible ya que involucraría un cambio en la monotonía de la función. Por lo tanto, queremos encontrar el único valor $x_0\in$ $[1.9,3.0]$ tal que $J_0(x_0)=0$. Dada la tabla de nodos para los valores de $x=1.9+0.1\cdot k$, donde $k=0,\ldots,11$, estimaremos la raíz mediante la interpolación inversa. El objetivo es encontrar polinomios interpoladores de grados 1, 3 y 5 usando la siguiente tabla y separando los casos en que interpolamos solamente valores positivos, negativos o mixtos.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c|c|c|c|c}
+         \hline
+         $J_0(x)$& 0.281818559374385 &  0.223890779141236 & 0.166606980331990 &  0.110362266922174   \\
+         \hline
+         $x$ & 1.9 &2.0&2.1 &2.2 \\
+         \hline
+         \hline
+        $J_0(x)$&0.055539784445602 & 0.002507683297244 &  -0.048383776468198& -0.096804954397038\\
+        \hline
+         $x$ & 2.3 & 2.4 & 2.5 & 2.6\\
+         \hline
+         \hline
+         $J_0(x)$ & -0.142449370046012& -0.185036033364387 & -0.224311545791968 & -0.260051954901934\\
+         \hline
+         $x$ & 2.7 & 2.8 & 2.9 & 3.0
+    \end{tabular}
+    \caption{Tabla de nodos de la función de Bessel evaluada en los puntos equidistantes}
+    \label{pro2}
+\end{table}\\
+Nuestra primera intuición es que trabajando con polinomios obtenidos a partir de valores únicamente positivos (o únicamente negativos) y de grado menor, la aproximación de la raíz sería peor que utilizando polinomios interpoladores obtenidos con valores mixtos y de grado mayor. Aun así, teniendo en cuenta el fenómeno de Runge, consideramos la posibilidad de que el grado del polinomio y el número de nodos no sean proporcionales a una mejor aproximación de la raíz. Por lo tanto, no tiene por qué ser cierto que cuanto mayor sea el grado del polinomio, mejor se aproxime al valor deseado. 
+Los polinomios evaluados en cero dan los siguientes valores:
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        & Positivos & Negativos & Mixtos \\
+        \hline
+        Grado 1& 2.404728613882804 & 2.400077241947103 & 2.404927513002774\\
+        \hline
+        Grado 3& 2.404822718113947 & 2.404149375353537 & 2.404824021911155\\	
+        \hline   
+        Grado 5 & 2.40482529478546 & 2.404216734868283 & 2.404825653043717 \\	
+        \hline
+    \end{tabular}
+    \caption{Aproximación de la raíz $x_0$ mediante los distintos polinomios de interpolación}
+\end{table}\\
+Al contrario de nuestras hipótesis iniciales, podemos observar que los polinomios obtenidos a partir de interpolar valores positivos o mixtos se aproximan a un valor similar a $2.40482...$ por lo que podemos llegar a pensar que este es el valor de la raíz. De hecho, el fenómeno de Runge no se contempla en este caso ya que a mayor grado no se percibe una oscilación para $J_0(x_0)=0$ sino todo lo contrario, parece ser que a mayor grado los polinomios tienden a una aproximación común. Ahora bien, los polinomios que interpolan valores negativos no se comportan del mismo modo, es más, a mayor grado pierde estabilidad. Indagando un poco, sabemos que $J_0(x)$  sigue siendo estrictamente monótona hasta para $x=3.6$, por lo que si construimos polinomios interpoladores $p_7(x)$ y $p_9(x)$ de grado 7 y 9 respectivamente a partir de una extensión natural de la tabla \ref{pro2}, obtenemos aproximaciones de $x_0$ de $p_7(0)=2.402162106903553$ y $p_9(0)=2.345349522556128$. 
+\newline Esto se debe principalmente al comportamiento de las derivadas de orden superior, ya que si nos fijamos en la cota del error, éste depende principalmente del valor absoluto de la derivada $n$-ésima como se ve en la ecuación \eqref{eq1}. Si observamos las derivadas $n+1$ de $J_0^{-1}(x)$ en $[1.9,3]$ para $n=1,3,5$, tenemos que $|f^{n+1}(\xi)|$ es más grande en el intervalo $[2.4,3.0]$ que en $[1.9,2.4]$ y puesto que la función es negativa en $[2.5,3.0]$, al interpolar con valores negativos obtenemos un rango del error muy amplio, ya que las derivadas $n$-ésimas son más grandes y, por lo tanto, no se aproxima adecuadamente a la raíz. Por el mismo argumento, como en el intervalo $[1.9,2.4]$ se contemplan derivadas de magnitud menor, el error $|J^{-1}_0(x)-p(x)|$ para polinomios que interpolan valores positivos o mixtos es menor, y por lo tanto obtenemos una mejor aproximación de la raíz.
+\section*{Problema 4}
+En este problema queremos evaluar la integral 
+\begin{equation}
+    \int_0^1\frac{dx}{1+x^2}.
+    \label{pro4-0}
+\end{equation} Para ello emplearemos el método de los trapecios y el método de Simpson, que nos darán aproximaciones de esta integral. En la siguiente tabla se muestran los resultados de ambos métodos dividiendo el intervalo $[0,1]$ en cuatro partes iguales:
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        Método de los trapecios & 0.7827941176470589 \\
+        \hline
+        Método de Simpson & 0.7853921568627452 \\
+        \hline
+    \end{tabular}
+    \caption{Aproximaciones de $\int_0^1\frac{dx}{1+x^2}$}
+    \label{pro4-1}
+\end{table}\par
+El valor exacto de \eqref{pro4-0} se puede hallar analíticamente: 
+\begin{equation}
+    \int_0^1\frac{dx}{1+x^2}=\arctan x\Big|_0^1=\frac{\pi}{4}\approx 0.7853981633974483
+\end{equation}
+Comparando los valores de la tabla \ref{pro4-1} con $\frac{\pi}{4}$ obtenemos: 
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        & Error \\
+        \hline
+        Método de los trapecios & $2.60404575038936\times10^{-3}$ \\
+        \hline
+        Método de Simpson & $6.00653470306245\times10^{-6}$ \\
+        \hline
+    \end{tabular}
+\end{table}\par
+Concluimos que, para este problema y esta partición del intervalo, el método de Simpson es más efectivo.
+\section*{Problema 5}
+En este problema queremos evaluar la integral 
+\begin{equation}
+    \int_1^5\frac{e^x}{x}dx.
+\end{equation}
+Para ello utilizaremos el método de los trapecios dividiendo el intervalo $[1,5]$ en $n$ partes iguales con $n = 4, 8, 16, 32, 64$.\par Sabemos que el error de aproximación de la integral $\int_a^bf(x)dx$ utilizando el método de los trapecios dividiendo el intervalo $[a,b]$ en $n$ partes iguales es: $$E(n)=-\frac{f''(\xi)}{12}h^2(b-a),\quad\text{donde }h=\frac{b-a}{n}\text{ y }\xi\in[a,b].$$ En nuestro caso $f(x)=\frac{e^x}{x}$ y $f''(x)=\frac{e^x}{x^3}(x^2-2x+2)$. Teniendo en cuenta que $\max\limits_{x\in[1,5]}\left|\frac{e^x}{x^3}(x^2-2x+2)\right|=20.1842...<20.2$ tenemos que: $$|E(n)|\leq\frac{\max_{x\in[1,5]}\left|f''(x)\right|}{12}\frac{(b-a)^3}{n^2}=\frac{20.2\cdot 4^3}{12n^2}.$$ En la siguiente tabla se muestran los resultados obtenidos junto con las cotas de los errores esperados:
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & Aproximación & Error esperado \\
+        \hline 
+        $n=4$ & 40.23970135663446 & 6.73333333333333 \\
+        \hline
+        $n=8$ & 38.7829281563148 & 1.68333333333333 \\
+        \hline
+        $n=16$ & 38.41371136353941 & 1.68333333333333 \\
+        \hline
+        $n=32$ & 38.32106916233212 & 0.105208333333333 \\
+        \hline
+        $n=64$ & 38.2978869041288 & 0.0263020833333333 \\
+        \hline
+    \end{tabular}
+\end{table}\par
+\section*{Problema 6}
+El error de aproximación de $\int_a^bf(x)dx$ utilizando el método de Simpson dividiendo el intervalo en $n$ partes iguales es: $$E(n)=-\frac{f^{(4)}(\xi)}{180}h^4(b-a),\quad\text{donde }h=\frac{b-a}{n}\text{ y }\xi\in[a,b].$$
+Queremos calcular el valor de $n$ tal que podamos aproximar $\int_1^2\log(x)dx$ con error menor que $\varepsilon=10^{-5}$, utilizando una partición de $[1,2]$ en $n$ intervalos iguales. Para ello queremos determinar el valor de $n$, tal que $E(n)<\varepsilon$. Es decir, como $a=1$ y $b=2$, tenemos que:
+$$\displaystyle E(n)<\varepsilon\iff\frac{\max\limits_{x\in[a,b]}\left|f^{(4)}(x)\right|h^4(b-a)}{180}<\varepsilon\iff\frac{\max\limits_{x\in[1,2]}\left|f^{(4)}(x)\right|(2-1)^5}{180n^4}<\varepsilon\iff n>\sqrt[4]{\frac{\max\limits_{x\in[1,2]}\left|f^{(4)}(x)\right|}{180\varepsilon}}.$$ En nuestro caso, como $f(x)=\log x$, $f^{(4)}(x)=-\frac{6}{x^4}$ y obtenemos que $\max\limits_{x\in[1,2]}\left|f^{(4)}(x)\right|=\frac{6}{1}=6$. Por lo tanto, $n>\sqrt[4]{\frac{6}{180\varepsilon}}=7.5984...$ Es decir, con $n=8$ debería ser suficiente para aproximar $\int_1^2\log(x)dx$ con error menor que $\varepsilon$. Haciendo el cálculo y comparándolo con el valor real (calculado analíticamente) obtenemos:
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        Método de Simpson & 0.386292043466313 \\
+        \hline
+        Valor exacto & 0.3862943611198906 \\
+        \hline
+    \end{tabular}
+    \caption{Valor exacto de la integral $\int_1^2\log(x)dx$ y valor aproximado de esta misma utilizando el método de Simpson dividiendo el intervalo en 8 partes iguales.}
+\end{table}\par
+Observemos que la diferencia entre ambos valores es menor que $10^{-5}$.
+\section*{Problema 7}
+La distancia que haya recorrido un automóvil en el intervalo de tiempo $[t_0,t_f]$ viene dada por $$L=\int_{t_0}^{t_f}v(t)dt.$$
+En nuestro caso $t_0=0\text{ s}$ y $t_f=84\text{ s}$. Además, conocemos $v(t)$ cuando $t=t_0+k\Delta t=:t_k$, siendo $\Delta t=6$ y $k=0,\ldots,14$. Aplicando el método de los trapecios al intervalo de tiempo $[0,84]$ y partiéndolo en 14 subintervalos iguales obtenemos que $$L\approx\frac{\Delta t}{2}\left(v(t_0)+v(t_{14})+2\sum_{k=1}^{13}v(t_k)\right).$$
+Haciendo los cálculos resulta que la longitud de la pista es $L\approx 2920.5\text{ m}$.
+\section*{Conclusiones}
+El principal conocimiento que nos ha aportado esta práctica lo hemos obtenido en los ejercicios de interpolación. Concretamente, éste a sido el hecho de que un mayor número de nodos de interpolación no implica una mayor aproximación a la función. Por otra parte, contrariamente al entendimiento a primera vista, hay nodos que funcionan mejor que los nodos equidistantes para interpolar una función.
+\end{document}
