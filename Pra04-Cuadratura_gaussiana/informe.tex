@@ -1,7 +1,7 @@
 \documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsthm, amsmath, mathtools, amssymb}
-\usepackage[left=2cm,right=2cm,top=1.75cm,bottom=1.75cm]{geometry}
+\usepackage[left=1.9cm,right=1.9cm,top=1.5cm,bottom=1.75cm]{geometry}
 \usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
 \usepackage{multirow}
@@ -29,16 +29,16 @@
 \restoregeometry
 \section{Ejercicio avanzado}\label{ejercicioavanzado}
 El objetivo de esta práctica es calcular las integrales
-$$I_1=\int_{-1}^1\frac{1}{1+x^2}\dd x,\qquad I_2=\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x,\qquad I_3=\int_{-1}^1|x|\dd x$$ mediante las fórmulas de cuadratura de Gau\ss-Chebyshev y de Gau\ss-Legendre con 2, 4 y 6 nodos y (cuando sea posible) también con el método de los trapecios.\par 
+$$I_1=\int_{-1}^1\frac{1}{1+x^2}\dd x,\qquad I_2=\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x,\qquad I_3=\int_{-1}^1|x|\dd x$$ mediante las fórmulas de cuadratura de Gau\ss-Chebyshev y de Gau\ss-Legendre con 2, 4 y 6 nodos, y (cuando sea posible) también con el método de los trapecios.\par 
 Las fórmulas de cuadratura gaussiana son de la forma: 
 \begin{equation}
     \int_a^b\omega(x)f(x)\dd x\approx\sum_{i=1}^na_if(x_i),
     \label{gauss}
 \end{equation}
-donde $x_i$ son las raíces del polinomio ortogonal de grado $n$ respecto a la función peso $\omega(x)$ y los $a_i$ son coeficientes que hacen que la fórmula sea exacta para polinomios de grado menor o igual que $2n-1$.
+donde $x_i$ son las raíces del polinomio ortogonal de grado $n$ respecto a la función peso $\omega(x)$ y $a_i$ son coeficientes que hacen que la fórmula sea exacta para polinomios de grado menor o igual que $2n-1$.
 \subsection*{Cálculo de las raíces de los polinomios}
-Primero de todo necesitamos encontrar las raíces de los polinomios ortogonales de Chebyshev y Legendre de grado $n$. Los polinomios de Chebyshev $T_n(x)$ son ortogonales respecto de la función peso $\omega(x)=\frac{1}{\sqrt{1-x^2}}$ y están definidos en el intervalo $[-1,1]$ mediante la siguiente fórmula recurrente:
-$$T_0=1,\qquad T_1=x,\qquad T_{n+1}=2xT_n(x)-T_{n-1}\quad\forall n\geq 1.$$ Notemos que el polinomio $T_n(x)$ tiene grado $n$. Así pues calculando estos polinomios y sus raíces utilizando el método de la bisección juntamente con el método de Newton obtenemos los siguientes resultados:
+En primer lugar, necesitamos encontrar las raíces de los polinomios ortogonales de Chebyshev y Legendre de grado $n$. Los polinomios de Chebyshev $T_n(x)$ son ortogonales respecto de la función peso $\omega(x)=\frac{1}{\sqrt{1-x^2}}$ y están definidos en el intervalo $[-1,1]$ mediante la siguiente fórmula recurrente:
+$$T_0=1,\qquad T_1=x,\qquad T_{n+1}=2xT_n(x)-T_{n-1}\quad\forall n\geq 1.$$ Notemos que el polinomio $T_n(x)$ tiene grado $n$ y $n$ raíces reales. Así pues, calculando estos polinomios y estas raíces utilizando el método de la bisección juntamente con el método de Newton, obtenemos los siguientes resultados:
 \begin{table}[ht]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
@@ -60,7 +60,7 @@ $$T_0=1,\qquad T_1=x,\qquad T_{n+1}=2xT_n(x)-T_{n-1}\quad\forall n\geq 1.$$ Note
     \caption{Raíces de los polinomios ortogonales de Chebyshev de grados $n=2,4,6\text{ y }8$}
 \end{table}\par
 Por otra parte, los polinomios de Legendre $P_n(x)$ son ortogonales respecto de la función peso $\omega(x)=1$ y están definidos en el intervalo $[-1,1]$ mediante la siguiente fórmula recurrente:
-$$P_0=1,\qquad P_1=x,\qquad P_{n+1}=\frac{(2n+1)x}{n+1}P_n(x)-\frac{n}{n+1}P_{n-1}\quad\forall n\geq 1.$$ Notemos que, de forma similar como pasa con los polinomios de Chebyshev, el polinomio $P_n(x)$ tiene grado $n$. Así pues calculando estos polinomios y sus raíces utilizando el método de la bisección juntamente con el método de Newton obtenemos los siguientes resultados:
+$$P_0=1,\qquad P_1=x,\qquad P_{n+1}=\frac{(2n+1)x}{n+1}P_n(x)-\frac{n}{n+1}P_{n-1}\quad\forall n\geq 1.$$ Notemos que, de forma similar como ocurre con los polinomios de Chebyshev, el polinomio $P_n(x)$ tiene grado $n$ y $n$ raíces reales. Así pues, calculando estos polinomios y sus raíces utilizando el método de la bisección juntamente con el método de Newton, obtenemos los siguientes resultados:
 \begin{table}[ht]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
@@ -82,7 +82,7 @@ $$P_0=1,\qquad P_1=x,\qquad P_{n+1}=\frac{(2n+1)x}{n+1}P_n(x)-\frac{n}{n+1}P_{n-
     \caption{Raíces de los polinomios ortogonales de Legendre de grados $n=2,4,6\text{ y }8$}
 \end{table}
 \subsection*{Cálculo de los coeficientes $a_i$ de las fórmulas de cuadratura}
-El objetivo ahora es calcular los coeficientes $a_i$ de la fórmula \eqref{gauss}. Para ello imponemos que la fórmula \eqref{gauss} sea válida para $f(x)=x^k$, $k=0,\ldots,n-1$. Es decir, si $x_i$, $i=1,\ldots,n$ son las raíces de un polinomio ortogonal, entonces resulta el siguiente sistema de ecuaciones lineales en las variables $a_1,\ldots,a_n$:
+El objetivo ahora es calcular los coeficientes $a_i$ de la fórmula \eqref{gauss}. Para ello imponemos que ésta sea válida para $f(x)=x^k$, $k=0,\ldots,n-1$. Es decir, si $x_i$ y $y_i$, para $i=1,\ldots,n$, son las raíces de los polinomio de Chebyshev y Legendre respectivamente, entonces obtenemos los siguientes sistemas de ecuaciones lineales en las variables $a_1,\ldots,a_n$:
 \begin{align*}
     &\left\{
     \begin{array}{lc}
@@ -95,26 +95,26 @@ El objetivo ahora es calcular los coeficientes $a_i$ de la fórmula \eqref{gauss
     \left\{
     \begin{array}{lc}
         k=0: & \displaystyle\int_a^b\dd x=\sum_{i=1}^na_i\\
-        k=1: & \displaystyle\int_a^bx\dd x=\sum_{i=1}^na_ix_i\\
+        k=1: & \displaystyle\int_a^bx\dd x=\sum_{i=1}^na_iy_i\\
         \hspace{11pt}\vdots & \vdots \\
-        k=n-1: & \displaystyle\int_a^bx^{n-1}\dd x=\sum_{i=1}^na_ix_i^{n-1}\\
+        k=n-1: & \displaystyle\int_a^bx^{n-1}\dd x=\sum_{i=1}^na_iy_i^{n-1}\\
     \end{array}\right.
     \\
     &\;\;\text{Sistema de coeficientes de Gau\ss-Chebyshev} & \text{Sistema de coeficientes de Gau\ss-Legendre}
 \end{align*}
-En el caso de que $x_i$ sean las raíces de los polinomios de Chebyshev, se puede ver que los coeficientes toman todos el mismo valor y éste es: $$a_i=\frac{\pi}{n},\quad i=1,\ldots,n.$$ Si $x_i$ son las raíces de los polinomios de Legendre, entonces los $a_i$ satisfacen: $$a_i=\frac{2}{(1-x_i^2)(P_n'(x_i)^2)},\quad i=1,\ldots,n.$$ En las siguientes tablas se muestran estos coeficientes en ambos casos:
+En el caso de los coeficientes de Gau\ss-Chebyshev, se puede ver que toman todos el mismo valor y éste es: $$a_i=\frac{\pi}{n},\quad i=1,\ldots,n.$$ Por otro lado, respecto a los coeficientes de Gau\ss-Legendre, los $a_i$ satisfacen: $$a_i=\frac{2}{(1-y_i^2)(P_n'(y_i)^2)},\quad i=1,\ldots,n.$$ En las siguientes tablas se muestran estos coeficientes en ambos casos:
 \begin{table}[ht]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
         \cline{2-5}
         \multicolumn{1}{c}{} & \multicolumn{4}{|c|}{Grado}\\
         \hline
-        Cheby. & $n=2$ & $n=4$ & $n=6$ & $n=8$ \\
+        Chebyshev & $n=2$ & $n=4$ & $n=6$ & $n=8$ \\
         \hline
         $a_i$ & $-0.5773502691896257$ & $-0.8611363115940526$ & $-0.9324695142031521$ & $-0.9602898564975363$ \\
         \hline
         \hline
-        Legen. & $n=2$ & $n=4$ & $n=6$ & $n=8$ \\
+        Legendre & $n=2$ & $n=4$ & $n=6$ & $n=8$ \\
         \hline
         $a_1$ & $-0.5773502691896257$ & $-0.8611363115940526$ & $-0.9324695142031521$ & $-0.9602898564975363$ \\
         $a_2$ & $0.5773502691896257$ & $-0.3399810435848563$ & $-0.6612093864662645$ & $-0.7966664774136267$ \\
@@ -126,19 +126,19 @@ En el caso de que $x_i$ sean las raíces de los polinomios de Chebyshev, se pued
         $a_8$ & & & & $0.9602898564975363$ \\
         \hline
     \end{tabular}
-    \caption{Coeficientes de la fórmula de cuadratura de Gau\ss-Chebyshev y Gau\ss-Legendre para $n=2,4,6\text{ y }8$.}
+    \caption{Coeficientes de las fórmulas de cuadratura de Gau\ss-Chebyshev y Gau\ss-Legendre para $n=2,4,6\text{ y }8$}
 \end{table}
 \subsection*{Resolución de las integrales}
-Con los datos que tenemos ya podemos evaluar las integrales.
+A partir de estos datos ya podemos evaluar las integrales deseadas:
 \begin{enumerate}
-    \item $\displaystyle I_1=\int_{-1}^1\frac{1}{1+x^2}\dd x$:\par
+    \item $\displaystyle I_1=\int_{-1}^1\frac{1}{1+x^2}\dd x$\par
     En relación con esta integral, obtenemos los siguientes resultados:
     \begin{table}[ht]
         \centering
         \captionsetup{width=0.9\textwidth}
         \begin{tabular}{|c|c|c|c|}
             \cline{2-4}
-            \multicolumn{1}{c|}{} & Chebyshev & Legendre & Trapecios \\
+            \multicolumn{1}{c|}{} & Gau\ss-Chebyshev & Gau\ss-Legendre & Trapecios \\
             \hline
             $n=2$ & $1.480960979386122$ & $1.500000000000001$ & $1.5$ \\
             \hline
@@ -147,18 +147,18 @@ Con los datos que tenemos ya podemos evaluar las integrales.
             $n=6$ & $1.581877758114531$ & $1.570731707317074$ & $1.561538461538461$ \\
             \hline
         \end{tabular}
-        \caption{Aproximaciones de $\int_{-1}^1\frac{1}{1+x^2}\dd x$ mediante los diferentes métodos expuestos y utilizando $n$ puntos, para $n=2,4,6$}
+        \caption{Aproximaciones de $\displaystyle\int_{-1}^1\frac{1}{1+x^2}\dd x$ mediante los diferentes métodos expuestos y utilizando $n$ puntos, para $n=2,4,6$}
     \end{table}\par
     Analíticamente se puede calcular $I_1$ de la siguiente manera:
-    $$I_1=\int_{-1}^1\frac{1}{1+x^2}\dd x=\arctan x\Big|_{-1}^1=\frac{\pi}{2}\approx 1.57079632679490.$$ Observamos que es el método de Gau\ss-Legendre el que se aproxima mejor a $I_1$. En este caso éste es mejor que el método de Gau\ss-Chebyshev por el hecho de que al utilizar el método de Gau\ss-Chebyshev se tiene que modificar la función integrando $f_1(x)=\frac{1}{1+x^2}$ a una función alternativa $g_1(x)=\frac{\sqrt{1-x^2}}{1+x^2}$ (para poder aplicar el método), que conlleva a una complicación de la función utilizada en la fórmula y de sus derivadas, que tendrán magnitudes mayores y por consiguiente crearan un error de la fórmula de cuadratura mayor.\par Respecto a los trapecios sabemos que la fórmula de aproximación solo es cierta para polinomios de grado menor o igual a $n-1$ mientras que las fórmula de cuadratura son ciertas para polinomios de grado hasta $2n-1$. Esto resulta en que el método de los trapecios necesite muchos más nodos para aproximar igual de bien la integral.
-    \item $\displaystyle I_2=\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x$:\par
+    $$I_1=\int_{-1}^1\frac{1}{1+x^2}\dd x=\arctan x\Big|_{-1}^1=\frac{\pi}{2}\approx 1.57079632679490.$$ Observemos que es el método de Gau\ss-Legendre el que se aproxima mejor a $I_1$. En este caso éste es mejor que el método de Gau\ss-Chebyshev, por el hecho de que al utilizar el método de Gau\ss-Chebyshev hay que modificar la función integrando $f_1(x)=\frac{1}{1+x^2}$ a una función alternativa, $g_1(x)=\frac{\sqrt{1-x^2}}{1+x^2}$, para poder aplicar el método. Esto conlleva una complicación de la función utilizada en la fórmula y de sus derivadas, que tendrán magnitudes mayores y, por consiguiente, crearan un error mayor en la fórmula de cuadratura.\par Respecto al método de los trapecios sabemos que la fórmula de aproximación solo es cierta para polinomios de grado menor o igual a $n-1$, mientras que las fórmulas de cuadratura son ciertas para polinomios de grado hasta $2n-1$. Esto implica que el método de los trapecios necesite muchos más nodos para aproximar igual de bien la integral.
+    \item $\displaystyle I_2=\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x$\par
     Los resultados de aproximar $I_2$ son los siguientes:
     \begin{table}[ht]
         \centering
         \captionsetup{width=0.9\textwidth}
         \begin{tabular}{|c|c|c|}
             \cline{2-3}
-            \multicolumn{1}{c|}{} & Chebyshev & Legendre \\
+            \multicolumn{1}{c|}{} & Gau\ss-Chebyshev & Gau\ss-Legendre \\
             \hline
             $n=2$ & $15.90431280879833$ & $12.09624564337372$ \\
             \hline
@@ -167,19 +167,19 @@ Con los datos que tenemos ya podemos evaluar las integrales.
             $n=6$ & $16.56699250916492$ & $14.95101134114224$ \\
             \hline
         \end{tabular}
-        \caption{Aproximaciones de $\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x$ mediante los diferentes métodos expuestos utilizando y $n$ puntos, para $n=2,4,6$}
+        \caption{Aproximaciones de $\displaystyle\int_{-1}^1\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}\dd x$ mediante los diferentes métodos expuestos y utilizando $n$ puntos, para $n=2,4,6$}
     \end{table}\par
-    Notemos que en este caso el método de los trapecios no es aplicable ya que la integral $I_2$ es impropia (aunque convergente) tanto en $x=-1$ como en $x=1$ y el método de los trapecios utiliza precisamente los valores de los dos extremos (en donde la función no está definida) para dar la aproximación de la integral.\par
-    Mediante un CAS (\textit{Computer Algebra System}) hemos obtenido el valor exacto de la integral $I_2$ con 16 decimales. Éste es: $I_2=\frac{675}{128}\pi\approx 16.56699250916493$. Fijémonos que este valor es exactamente el mismo (excepto el último dígito debido a la aritmética en punto flotante) que el dado utilizando el método de Gau\ss-Chebyshev con $n=6$ nodos. En cambio utilizando el método de Gau\ss-Legendre no pasa lo mismo.\par
-    Esta excelente aproximación por parte del método de Gau\ss-Chebyshev es debido al hecho que estamos aplicando la fórmula a un polinomio de grado 8. Ahora bien, sabemos que las fórmulas de cuadratura utilizando $n$ nodos son exactas para polinomios de grado menor o igual que $2n-1$. En el caso de $n=6$, es fácil darse cuenta de que $8<2\cdot 6-1=11$.\par Utilizando el método de Gau\ss-Legendre ésto no ocurre ya que aplicamos la fórmula directamente a $f_2(x)=\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}$, que no es un polinomio y, por lo tanto, la fórmula no es exacta.
-    \item $\displaystyle I_3=\int_{-1}^1|x|\dd x$:\par
-    Finalmente, los resultados de esta integral se muestran a continuación:
+    Notemos que en este caso el método de los trapecios no es aplicable, ya que la integral $I_2$ es impropia (aunque convergente) tanto en $x=-1$ como en $x=1$, y el método de los trapecios utiliza precisamente los valores de los dos extremos (donde la función no está definida) para dar la aproximación de la integral.\par
+    Mediante un CAS (\textit{Computer Algebra System}), hemos obtenido el valor exacto de la integral $I_2$ con 16 decimales. Éste es: $I_2=\frac{675}{128}\pi\approx 16.56699250916493$. Fijémonos que este valor es exactamente el mismo (excepto el último dígito debido a la aritmética en punto flotante) que el obtenido utilizando el método de Gau\ss-Chebyshev con $n=6$ nodos. En cambio, utilizando el método de Gau\ss-Legendre no sucede lo mismo.\par
+    Esta excelente aproximación por parte del método de Gau\ss-Chebyshev es debido al hecho de que estamos aplicando la fórmula a un polinomio de grado 8. Ahora bien, sabemos que las fórmulas de cuadratura utilizando $n$ nodos son exactas para polinomios de grado menor o igual que $2n-1$. En el caso de $n=6$, es fácil darse cuenta de que $8<2\cdot 6-1=11$ y, por lo tanto, la aproximación de Gau\ss-Chebyshev es exacta.\par Utilizando el método de Gau\ss-Legendre esto no ocurre, ya que aplicamos la fórmula directamente a $f_2(x)=\frac{x^8-2x^6+3x^4-x^2+5}{\sqrt{1-x^2}}$, que no es un polinomio y, por lo tanto, la fórmula no es exacta.
+    \item $\displaystyle I_3=\int_{-1}^1|x|\dd x$\par
+    Los resultados de esta integral se muestran a continuación:
     \begin{table}[ht]
         \centering
         \captionsetup{width=0.9\textwidth}
         \begin{tabular}{|c|c|c|c|}
             \cline{2-4}
-            \multicolumn{1}{c|}{} & Chebyshev & Legendre & Trapecios \\
+            \multicolumn{1}{c|}{} & Gau\ss-Chebyshev & Gau\ss-Legendre & Trapecios \\
             \hline
             $n=2$ & $1.570796326794897$ & $1.154700538379252$ & $1$ \\
             \hline
@@ -188,19 +188,20 @@ Con los datos que tenemos ya podemos evaluar las integrales.
             $n=6$ & $1.047197551196598$ & $1.019894093560785$ & $1$ \\
             \hline
         \end{tabular}
-        \caption{Aproximaciones de $\int_{-1}^1|x|\dd x$ mediante los diferentes métodos expuestos y utilizando $n$ puntos, para $n=2,4,6$}
+        \caption{Aproximaciones de $\displaystyle\int_{-1}^1|x|\dd x$ mediante los diferentes métodos expuestos y utilizando $n$ puntos, para $n=2,4,6$}
     \end{table}\par
     De nuevo, esta integral es fácilmente calculable analíticamente: $$\int_{-1}^1|x|\dd x=\int_{-1}^0-x\dd x+\int_0^1x\dd x=-\frac{x^2}{2}\Bigg|_{-1}^0+\frac{x^2}{2}\Bigg|_0^1=1.$$
-    De entrada puede parecer sorprendente la excelente aproximación del método de los trapecios en este caso. Sin embargo si observamos con más detenimiento la función $f_3(x)=|x|$ nos damos cuenta de que la región a integrar se trata precisamente de dos trapecios puestos uno en frente del otro. Ésto justifica la exactitud del método de los trapecios.\par 
-    Por lo que se refiere a los otros dos métodos, pasa un fenómeno similar al del la primera integral. Para utilizar el método de Gau\ss-Legendre basta con utilizar la función a integrar $f_3(x)$ mientras que para utilizar el método de Gau\ss-Chebyshev tenemos que crear una función alternativa $g_3(x)=\sqrt{1-x^2}|x|$ que hace aumentar la complejidad de las derivadas de orden superior y, por lo tanto, del error cometido al aproximar la integral mediante las formulas de cuadratura.
+    En un principio, puede parecer sorprendente la excelente aproximación del método de los trapecios en este caso. Sin embargo, si observamos con más detenimiento la función $f_3(x)=|x|$, nos daremos cuenta de que la región a integrar está compuesta precisamente de dos trapecios puestos uno en frente del otro. Esto justifica la exactitud del método de los trapecios. A pesar de ello, no es difícil llegar a la conclusión de que esta exactitud solo ocurre cuando partimos el intervalo $[-1,1]$ en un número par de subintervalos. Si éste lo partimos en un número impar de subintervalos, entonces el trapecio aproximando la integral en el subintervalo central (alrededor del punto $x=0$) no da el valor exacto que le corresponde y produce errores.\par
+    Con respecto al método de Gau\ss-Legendre podríamos llegar a pensar que, al ser la función $f_3(x)$ una función  polinómica de grado 1 a trozos, por el teorema del error de aproximación de las fórmulas de cuadratura, el error debería de ser 0 en los tres casos para $n$. No obstante, la función $f_3(x)$ no es de clase $\mathcal{C}^1$ y, por lo tanto, el teorema del error no es aplicable, lo que demuestra la inexactitud del método de Gau\ss-Legendre en este caso.\par
+    Finalmente, utilizando el método de Gau\ss-Chebyshev tenemos que crear una función alternativa $g_3(x)=\sqrt{1-x^2}|x|$ para poder aplicar el método, lo que hace empeorar su efectividad.
 \end{enumerate}
 \section{Ejercicios opcionales}
-\subsection*{Fórmulas de Cuadratura Gaussiana generalizadas}
-El objetivo ahora es dar una generalización de las fórmulas de cuadratura de Gau\ss-Chebyshev y de Gau\ss-Legendre para un intervalo $[a,b]$ arbitrario. Es decir, queremos dar una fórmula para $$I=\int_a^b\omega(x)f(x)\dd x.$$ Para ello consideremos el cambio de variable $x=\frac{(b-a)t+b+a}{2}$. Observemos que $x=a$ cuando $t=-1$ y que $x=b$ cuando $t=1$. Por lo tanto tenemos que: $$I=\int_{-1}^1\omega\left(\frac{(b-a)t+b+a}{2}\right)f\left(\frac{(b-a)t+b+a}{2}\right)\frac{b-a}{2}\dd t=\int_{-1}^1\frac{\omega(t)\omega\left(\frac{(b-a)t+b+a}{2}\right)f\left(\frac{(b-a)t+b+a}{2}\right)(b-a)}{2\omega(t)}\dd t$$ Ahora bien si denotamos por $$g(t):=\frac{\omega\left(\frac{(b-a)t+b+a}{2}\right)f\left(\frac{(b-a)t+b+a}{2}\right)(b-a)}{2\omega(t)},$$ tenemos que $\displaystyle I=\int_{-1}^1\omega(t)g(t)\dd t$ y por la fórmula de cuadratura obtenemos: $$I=\int_{-1}^1\omega(t)g(t)\dd t\approx\sum_{i=1}^na_ig(x_i)=\sum_{i=1}^na_i\frac{b-a}{2}\cdot\frac{\omega\left(\frac{(b-a)x_i+b+a}{2}\right)f\left(\frac{(b-a)x_i+b+a}{2}\right)}{\omega(x_i)}$$ En el caso particular de la fórmula de cuadratura de Gau\ss-Chebyshev $\left(\omega(x)=\frac{1}{\sqrt{1-x^2}}\right)$ obtenemos: $$\int_a^b\frac{f(x)}{\sqrt{1-x^2}}\dd x\approx\sum_{i=1}^na_i\frac{b-a}{2}\cdot\frac{\sqrt{1-x_i^2}}{\sqrt{1-\left(\frac{(b-a)x_i+b+a}{2}\right)^2}}f\left(\frac{(b-a)x_i+b+a}{2}\right).$$
-En el caso particular de la fórmula de cuadratura de Gau\ss-Legendre $\left(\omega(x)=1\right)$ obtenemos:
+\subsection*{Fórmulas de cuadratura gaussiana generalizadas}
+El objetivo ahora es dar una generalización de las fórmulas de cuadratura de Gau\ss-Chebyshev y de Gau\ss-Legendre para un intervalo $[a,b]$ arbitrario. Es decir, queremos dar una fórmula para: $$I=\int_a^b\omega(x)f(x)\dd x.$$ Para ello consideremos el cambio de variable $x=\frac{(b-a)t+b+a}{2}$. Observemos que $x=a$ cuando $t=-1$ y que $x=b$ cuando $t=1$. Por lo tanto, tenemos que: $$I=\int_{-1}^1\omega\left(\frac{(b-a)t+b+a}{2}\right)f\left(\frac{(b-a)t+b+a}{2}\right)\frac{b-a}{2}\dd t=\int_{-1}^1\frac{\omega(t)\omega\left(\frac{(b-a)t+b+a}{2}\right)f\left(\frac{(b-a)t+b+a}{2}\right)(b-a)}{2\omega(t)}\dd t.$$ Ahora bien, si denotamos por $$g(t):=\frac{\omega\left(\frac{(b-a)t+b+a}{2}\right)f\left(\frac{(b-a)t+b+a}{2}\right)(b-a)}{2\omega(t)},$$ tenemos que $\displaystyle I=\int_{-1}^1\omega(t)g(t)\dd t$, y por la fórmula de cuadratura obtenemos: $$I=\int_{-1}^1\omega(t)g(t)\dd t\approx\sum_{i=1}^na_ig(x_i)=\sum_{i=1}^na_i\frac{b-a}{2}\cdot\frac{\omega\left(\frac{(b-a)x_i+b+a}{2}\right)f\left(\frac{(b-a)x_i+b+a}{2}\right)}{\omega(x_i)}$$ En el caso particular de la fórmula de Gau\ss-Chebyshev $\left(\omega(x)=\frac{1}{\sqrt{1-x^2}}\right)$ obtenemos: $$\int_a^b\frac{f(x)}{\sqrt{1-x^2}}\dd x\approx\sum_{i=1}^na_i\frac{b-a}{2}\cdot\frac{\sqrt{1-x_i^2}}{\sqrt{1-\left(\frac{(b-a)x_i+b+a}{2}\right)^2}}f\left(\frac{(b-a)x_i+b+a}{2}\right).$$
+En el caso particular de la fórmula de Gau\ss-Legendre $\left(\omega(x)=1\right)$ obtenemos:
 $$\int_a^bf(x)\dd x\approx\sum_{i=1}^na_i\frac{b-a}{2}f\left(\frac{(b-a)x_i+b+a}{2}\right).$$
 \subsection*{Longitud de una curva}
-Aplicaremos ahora las fórmulas de cuadratura para calcular la longitud de la elipse $$\left(\frac{x}{2}\right)^2+(2y)^2=1$$ cuando $y>0$ y $x\in[-1,1]$. Equivalentemente, queremos calcular la longitud de arco de la función $$f(x)=\frac{1}{2}\sqrt{1-\left(\frac{x}{2}\right)^2}$$ entre $-1$ i 1. La longitud de arco de una función derivable $f(x)$ entre $x=a$ y $x=b$ se calcula mediante la fórmula: $$L(f,a,b)=\int_a^b\sqrt{1+f'(x)^2}\dd x.$$ Aplicando a nuestro caso particular tenemos que $f(x)=\frac{1}{2}\sqrt{1-\left(\frac{x}{2}\right)^2}$ y por lo tanto $f'(x)=\frac{-x}{8\sqrt{1-\left(\frac{x}{2}\right)^2}}$. Entonces tenemos que calcular la integral: $$\int_{-1}^1\sqrt{1+\frac{x^2}{64\left[1-\frac{x^2}{4}\right]}}\dd x.$$ En la sección \ref{ejercicioavanzado} hemos podido comprobar que forzar a utilizar Gau\ss-Chebyshev cuando no hay el término $\frac{1}{\sqrt{1-x^2}}$ explícito en el integrando provoca peores resultados que utilizar directamente el método de Gau\ss-Legendre. Así pues hemos ido aproximando la longitud de la elipse utilizando diferente numero de nodos mediante el método de Gau\ss-Legendre como se muestra en la siguiente tabla:
+Aplicaremos ahora las fórmulas de cuadratura para calcular la longitud de la elipse $$\left(\frac{x}{2}\right)^2+(2y)^2=1$$ cuando $y>0$ y $x\in[-1,1]$. Equivalentemente, queremos calcular la longitud de arco de la función $$f(x)=\frac{1}{2}\sqrt{1-\left(\frac{x}{2}\right)^2}$$ entre $x=-1$ i $x=1$. La longitud de arco de una función derivable $f(x)$ entre $x=a$ y $x=b$ se calcula mediante la fórmula: $$L(f,a,b)=\int_a^b\sqrt{1+f'(x)^2}\dd x.$$ Aplicándolo a nuestro caso particular, tenemos que $f(x)=\frac{1}{2}\sqrt{1-\left(\frac{x}{2}\right)^2}$ y, por lo tanto, $f'(x)=\frac{-x}{8\sqrt{1-\left(\frac{x}{2}\right)^2}}$. Entonces calcularemos la integral: $$\int_{-1}^1\sqrt{1+\frac{x^2}{64\left[1-\frac{x^2}{4}\right]}}\dd x.$$ En la sección \ref{ejercicioavanzado} hemos podido comprobar que forzar a utilizar el método de Gau\ss-Chebyshev cuando no hay el término $\frac{1}{\sqrt{1-x^2}}$ explícito en el integrando provoca peores resultados que utilizar directamente el método de Gau\ss-Legendre. Así pues hemos ido aproximando la longitud de la elipse utilizando diferente número de nodos mediante el método de Gau\ss-Legendre como se muestra en la siguiente tabla:
 \begin{table}[ht]
     \centering
     \begin{tabular}{|c|c|}
@@ -224,10 +225,10 @@ Aplicaremos ahora las fórmulas de cuadratura para calcular la longitud de la el
         $n=9$ & $2.006145090433641$ \\
         \hline
     \end{tabular}
-    \caption{Aproximación de la longitud de la elipse $\left(\frac{x}{2}\right)^2+(2y)^2=1$ cuando $y>0$ y $x\in[-1,1]$ utilizando el método de Gau\ss-Legendre y diferente número de nodos}
+    \caption{Aproximación de la longitud de la elipse $\left(\frac{x}{2}\right)^2+(2y)^2=1$, cuando $y>0$ y $x\in[-1,1]$, utilizando el método de Gau\ss-Legendre y diferente número de nodos}
 \end{table}\par
-Observamos que a partir de $n=6$ tenemos 6 cifras decimales exactas por lo que podemos concluir que la aproximación de la longitud deseada con 6 cifras decimales es: $$L(f,-1,1)=\int_{-1}^1\sqrt{1+\frac{x^2}{64\left[1-\frac{x^2}{4}\right]}}\dd x\approx 2.006145.$$
+Observemos que a partir de $n=6$ tenemos 6 cifras decimales exactas, por lo que podemos concluir que la aproximación de la longitud deseada con 6 cifras decimales es: $$L(f,-1,1)=\int_{-1}^1\sqrt{1+\frac{x^2}{64\left[1-\frac{x^2}{4}\right]}}\dd x\approx 2.006145.$$
 \section*{Conclusiones} 
-En esta práctica hemos aprendido a aproximar integrales de funciones de manera efectiva mediante las fórmulas de cuadratura de Gau\ss-Chebyshev y de Gau\ss-Legendre. Respecto a ésto, concluimos que en la práctica será más efectivo utilizar el método de Gau\ss-Legendre que el método de Gau\ss-Chebyshev por el hecho de que con en el primero se necesita el peso $\omega(x)=1$, que resulta más cómodo de trabajar que el peso $\omega(x)=\frac{1}{\sqrt{1-x^2}}$, correspondiente al segundo método. Dicho de otra manera, el valor $\omega(x)=1$ siempre lo tenemos multiplicando a la función integrando, mientras que el valor $\frac{1}{\sqrt{1-x^2}}$ si no aparece (que en general, es lo más probable) lo tenemos que poner ``artificialmente'' y ésto empeora el ritmo de convergencia de la aproximación hacia el valor real. Un ejemplo práctico de este fenómeno lo hemos visto al calcular la longitud de la elipse, en donde no aparece el valor $\frac{1}{\sqrt{1-x^2}}$ y por lo tanto hemos utilizado el método de Gau\ss-Legendre.\par 
-Por otra parte, métodos como el de los trapecios o el de Simpson en general necesitan muchos más nodos de aproximación para igualar la aproximación que se obtiene mediante las fórmulas de cuadratura. No obstante, hay casos (como el de la integral $I_3$) en los que, debido a la construcción de estos métodos, éstos son más efectivos que las fórmulas de cuadratura. 
+En esta práctica hemos aprendido a aproximar integrales de funciones de manera efectiva mediante las fórmulas de cuadratura de Gau\ss-Chebyshev y de Gau\ss-Legendre. Respecto a esto, concluimos que en la práctica será más efectivo utilizar el método de Gau\ss-Legendre que el método de Gau\ss-Chebyshev, por el hecho de que con el primero se necesita el peso $\omega(x)=1$, que resulta más cómodo de trabajar que el peso $\omega(x)=\frac{1}{\sqrt{1-x^2}}$, correspondiente al segundo método. Dicho de otro modo, el valor $1$ siempre lo tenemos multiplicando a la función a integrar, mientras que el valor $\frac{1}{\sqrt{1-x^2}}$ si no aparece (que en general, es lo más probable), lo tenemos que añadir ``artificialmente'' y esto empeora el ritmo de convergencia de la aproximación hacia el valor real. Un claro ejemplo de este fenómeno lo hemos visto al calcular la longitud de la elipse, donde no aparecía el valor $\frac{1}{\sqrt{1-x^2}}$ y, por lo tanto, hemos utilizado el método de Gau\ss-Legendre.\par 
+Por otra parte, métodos como el de los trapecios o el de Simpson, en general, necesitan muchos más nodos de aproximación para igualar la aproximación que se obtiene mediante las fórmulas de cuadratura. No obstante, hay casos (como el de la integral $I_3$) en los que, debido a la construcción de estos métodos, éstos son más efectivos que las fórmulas de cuadratura. 
 \end{document}

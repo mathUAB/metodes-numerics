@@ -21,13 +21,13 @@ int main() {
     printf("Introducir el numero maximo de nodos: ");
     scanf("%i",&N);
     printf("EJERCICIO 1\n\t\t\tChebyshev\t\tLegendre\t\tTrapecios\nIntegral 1:\n");
-    for (int n = 2; n <= N; n += 2)
+    for (int n = 2; n <= N; n++)
         printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, chebyshev, -1, 1, f1), cuadratura(n, legendre, -1, 1, f1), trapecios(n, -1, 1, f1));
     printf("\nIntegral 2:\n");
-    for (int n = 2; n <= N; n += 2)
+    for (int n = 2; n <= N; n++)
         printf("\t\tn = %i:  %.16G\t%.16G\n", n, cuadratura(n, chebyshev, -1, 1, f2), cuadratura(n, legendre, -1, 1, f2));
     printf("\nIntegral 3:\n");
-    for (int n = 2; n <= N; n += 2)
+    for (int n = 2; n <= N; n++)
         printf("\t\tn = %i:  %.16G\t%.16G\t%.16G\n", n, cuadratura(n, chebyshev, -1, 1, f3), cuadratura(n, legendre, -1, 1, f3), trapecios(n, -1, 1, f3));
     return 0;    
 }
