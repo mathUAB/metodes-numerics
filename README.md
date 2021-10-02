@@ -1,1 +1,1 @@
-Pràctiques de Mètodes numèrics. Matemàtiques UAB 2021-2022.
+Pràctiques de Mètodes Numèrics. Matemàtiques UAB 2021-2022.
