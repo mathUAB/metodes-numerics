@@ -1,0 +1,294 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[left=2.8cm,right=2.8cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings} 
+\usepackage{array}
+\usepackage[sorting=none,maxnames=10]{biblatex}
+\usepackage[catalan,english]{babel}
+\usepackage{csquotes}
+\usepackage{stmaryrd}
+\usepackage[affil-it]{authblk}
+
+
+%%% url symbol for references it is needed \usepackage{stmaryrd} %%%
+\newcommand\enllas{\raise.5pt\hbox{$\boxempty\kern-4.85pt{}^{\tiny\nearrow}$}\kern-2pt}
+
+\DeclareFieldFormat{url}{%
+  \ifhyperref
+    {\href{#1}{\enllas}}
+    {\url{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{references.bib}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{prop}{Proposició}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+\lstloadlanguages{C,Python,bash}
+\lstset{ %
+        backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+        basicstyle=\color{red}\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+        breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+        breaklines=true,                 % sets automatic line breaking
+        captionpos=b,                    % sets the caption-position to bottom
+        deletekeywords={...},            % if you want to delete keywords from the given language
+        escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+        extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+        frame=single,                    % adds a frame around the code
+        keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+        keywordstyle=\color{darkblue},       % keyword style
+        commentstyle=\itshape\color{gray},
+        identifierstyle=\color{black},
+        language=C,                 % the language of the code
+        otherkeywords={*,...},           % if you want to add more keywords to the set
+        numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+        numbersep=5pt,                   % how far the line-numbers are from the code
+        numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+        rulecolor=\color{gray},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+        showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+        showstringspaces=false,          % underline spaces within strings only
+        showtabs=false,                  % show tabs within strings adding particular underscores
+        stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+        stringstyle=\color{blue},     % string literal style
+        tabsize=2,                         % sets default tabsize to 2 spaces
+        %title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+\lstset{literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+        {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+        {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+        {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+        {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+        {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+        {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+        {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+        {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+        {€}{{\EUR}}1 {£}{{\pounds}}1
+}
+
+
+\renewcommand{\arraystretch}{1.75}
+\renewcommand{\labelenumii}{\alph{enumii})}
+
+\title{\bfseries\large LLIURAMENT VOLUNTARI 1}
+
+\author{Víctor Ballester Ribó\endgraf NIU:1570866}
+\date{\parbox{\linewidth}{\centering
+  Mètodes numèrics\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Març de 2021}}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+L'objectiu es trobar successions $(p_k)$ i $(q_k)$, amb $q_k\leq10^k-1$, de manera que $$\left|\frac{p_k}{q_k}-e\right|$$ sigui el més petit possible, per a cada $k$. Per resoldre aquest problema farem servir dos mètodes:
+\begin{enumerate}
+    \item \textbf{Mètode mitjançant programació}\par El programa següent calcula el parell $(p_k,q_k)$ per a $k=1,\ldots,8$.
+          \begin{lstlisting}
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+#define e 2.71828182845904523536
+
+double aproximacio(int xifres_denominador, int nombres[]);
+
+int main(){
+	int nombres[2]={0,e};
+	double aprox;
+	clock_t begin=clock();
+	for(int i=1;i<9;i++){
+		aprox=aproximacio(i,nombres);
+		printf("L'aproximacio a e en %i xifres al denominador es %i/%i i l'error comes es de %lg.\n",i,nombres[0],nombres[1],fabs(aprox-e));
+	}
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Time spent: %lf\n",time_spent);
+	return 0;
+}
+
+double aproximacio(int xifres_denominador, int nombres[]){
+	double error=fabs(nombres[0]/nombres[1]-e);
+	for(int i=1;i<pow(10,xifres_denominador);i++){
+		for(int j=(e-error)*i;j<(e+error)*i;j++){
+			if(fabs(j*1./i-e)<error){
+				nombres[0]=j;
+				nombres[1]=i;
+				error=fabs(nombres[0]*1./nombres[1]-e);
+			}	
+		}
+	}
+	return nombres[0]*1./nombres[1];
+}
+    \end{lstlisting}
+          La sortida del programa (executat en un temps de 2.394604 segons) ve reflectida en la taula següent:
+          \begin{table}[!ht]
+              \centering
+              \begin{tabular}{|c|c|c|}
+                  \hline
+                  $k$ & Fracció                                   & Error en l'aproximació de $e$ \\
+                  \hline
+                  1   & $\displaystyle\frac{19}{7}$               & $3.99611\times 10^{-3}$       \\[3pt]
+                  \hline
+                  2   & $\displaystyle\frac{193}{71}$             & $2.80307\times 10^{-5}$       \\[3pt]
+                  \hline
+                  3   & $\displaystyle\frac{1457}{536}$           & $1.75363\times 10^{-6}$       \\[3pt]
+                  \hline
+                  4   & $\displaystyle\frac{25946}{9545}$         & $5.51510\times 10^{-9}$       \\[3pt]
+                  \hline
+                  5   & $\displaystyle\frac{271801}{99990}$       & $2.76227\times 10^{-10}$      \\[3pt]
+                  \hline
+                  6   & $\displaystyle\frac{1084483}{398959}$     & $4.81837\times 10^{-13}$      \\[3pt]
+                  \hline
+                  7   & $\displaystyle\frac{14665106}{5394991}$   & $1.68754\times 10^{-14}$      \\[3pt]
+                  \hline
+                  8   & $\displaystyle\frac{268876667}{98914198}$ & $2.18383\times 10^{-17}$      \\[3pt]
+                  \hline
+              \end{tabular}
+              \caption{Fraccions amb $k$ xifres al denominador que aproximen millor a $e$.}
+              \label{t1}
+          \end{table}
+    \item \textbf{Mètode teòric}\par Per tal de calcular les diferents fraccions que aproximen $e$ usarem el concepte següent:
+          \begin{definition}
+              Una fracció contínua és una expressió de la forma
+              \begin{equation}
+                  a_0+\frac{1}{a_1+\cfrac{1}{a_2+\cfrac{1}{a_3+\cfrac{1}{\ddots}}}},
+                  \label{cont-frac}
+              \end{equation} on $a_0\in\mathbb{Z}$ i $a_i\in\mathbb{N}$ per a tot $i\in\mathbb{N}$. El valor de \eqref{cont-frac}, per simplificar, l'escriurem com $$[a_0;a_1,a_2,\ldots].$$ Definim la fracció contínua parcial $n$-èssima com $$[a_0;a_1,a_2,\ldots,a_n]:=a_0+\frac{1}{a_1+\cfrac{1}{a_2+\cfrac{1}{a_3+\cfrac{1}{\ddots+\cfrac{1}{a_n}}}}}.\qquad\text{\cite{2}}$$
+          \end{definition}
+          Observem que amb aquesta definició de fracció contínua parcial tenim la igualtat següent: $$[a_0;a_1,a_2,\ldots]=\lim_{n\to\infty}[a_0;a_1,a_2,\ldots,a_n].$$ D'altra banda, es pot demostrar (vegeu \cite{4}) que la fracció contínua parcial $n$-èssima de $[a_0;a_1,a_2,\ldots]$ és igual a $p_n/q_n$, on $p_n$ i $q_n$ satisfan les relacions recurrents següents:
+          \begin{equation}
+              p_n=a_np_{n-1}+p_{n-2},\qquad q_n=a_nq_{n-1}+q_{n-2},
+              \label{eq1}
+          \end{equation}
+          amb condicions inicials $p_0=a_0$, $p_1=a_0a_1+1$, $q_0=1$, $q_1=a_1$.\par Per al cas particular del nombre $e$, vegem el teorema següent:
+          \begin{theorem}
+              Sigui $(a_n)$, $n\geq 0$, la successió definida per $$a_n=\left\{\begin{array}{ccc}
+                      1  & si & n=3k,3k+2 \\[3pt]
+                      2k & si & n=3k+1
+                  \end{array}\right.$$ Considerem la fracció contínua parcial $n$-èssima formada per $a_n$, és a dir, $$[a_0;a_1,a_2,\ldots,a_n]=[1;0,1,1,2,1,1,4,1,1,6\ldots,a_n].$$ Aleshores, considerant les successions $(p_n)$ i $(q_n)$ definides en \eqref{eq1} tenim que $$e=\lim_{n\to\infty}\frac{p_n}{q_n}.$$
+          \end{theorem}
+          Abans de demostrar aquest teorema necessitem una proposició prèvia. Observem abans, però, que les fórmules de \eqref{eq1} per al cas particular de $e$ són:
+          \begin{align*}
+              p_{3k}   & =p_{3k-1}+p_{3k-2}, & q_{3k}   & =q_{3k-1}+q_{3k-2}, \\
+              p_{3k+1} & =2kp_{3k}+p_{3k-1}, & q_{3k+1} & =2kq_{3k}+q_{3k-1}, \\
+              p_{3k+2} & =p_{3k+1}+p_{3k},   & q_{3k+2} & =q_{3k+1}+q_{3k},
+          \end{align*}
+          amb condicions inicials $p_0=1$, $p_1=1$, $q_0=1$, $q_1=0$. Notem, doncs, que $p_1/q_1$ no està definit. I, per tant, per tal de descartar aquest valor, podem considerar la recurrència a partir de $n\geq 2$.
+          \begin{prop}
+              Sigui $m\in\mathbb{N}\cup\{0\}$. Considerem les integrals següents:
+              \begin{gather}
+                  A_m=\int_0^1\frac{x^m(x-1)^m}{m!}e^xdx,\\ B_m=\int_0^1\frac{x^{m+1}(x-1)^m}{m!}e^xdx,\\ C_m=\int_0^1\frac{x^m(x-1)^{m+1}}{m!}e^xdx.
+              \end{gather}
+              Aleshores tenim que:
+              \begin{gather}
+                  \label{ak7}A_m=q_{3m}e-p_{3m},\\
+                  \label{bk7}B_m=p_{3m+1}-q_{3m+1}e,\\
+                  \label{ck7}C_m=p_{3m+2}-q_{3m+2}e,
+              \end{gather}
+              per a tot $m$.
+          \end{prop}
+          \begin{proof}
+              Ho demostrarem per inducció sobre $m$. Comprovem el cas $m=0$.
+              \begin{gather*}
+                  A_0=\int_0^1e^x=e^x\Big|_0^1=e-1=q_0e-p_0.\\
+                  B_0=\int_0^1xe^x=xe^x-e^x\Big|_0^1=1=p_1-q_1e.\\
+                  C_0=\int_0^1(x-1)e^x=\int_0^1xe^x-\int_0^1e^x=1-(e-1)=2-e=p_2-q_2e.
+              \end{gather*}
+              Ara suposem que per al cas $m=k-1$ es verifiquen les igualtats \eqref{ak7}, \eqref{bk7} i \eqref{ck7}. Volem demostrar que també es verifiquen per al cas $n=k$.\par Provarem primer el següent:
+              \begin{gather}
+                  \label{ak}A_k=-B_{k-1}-C_{k-1},\\
+                  \label{bk}B_k=-2kA_k+C_{k-1},\\
+                  \label{ck}C_k=B_k-A_k.
+              \end{gather}
+              Per provar l'equació \eqref{ak}, notem que:
+              $$\left(\frac{x^k(x-1)^k}{k!}e^x\right)'=\frac{x^{k-1}(x-1)^k}{(k-1)!}e^x+\frac{x^k(x-1)^{k-1}}{(k-1)!}e^x+\frac{x^k(x-1)^k}{k!}e^x.$$ Integrant aquesta igualtat entre 0 i 1 obtenim:
+              \begin{multline*}
+                  0=\left.\frac{x^k(x-1)^k}{k!}e^x\right|_0^1=\int_0^1\left(\frac{x^k(x-1)^k}{k!}e^x\right)'dx=\int_0^1\frac{x^{k-1}(x-1)^k}{(k-1)!}e^xdx+\\+\int_0^1\frac{x^k(x-1)^{k-1}}{(k-1)!}e^xdx+\int_0^1\frac{x^k(x-1)^k}{k!}e^xdx=C_{k-1}+B_{k-1}+A_k,
+              \end{multline*} on hem aplicat el teorema fonamental del càlcul. Agrupant la primera i última expressió es dedueix que $A_k=-B_{k-1}-C_{k-1}$.\par Per provar l'equació \eqref{bk} procedim de forma similar com hem fet anteriorment. Notem que:
+              \begin{multline*}
+                  \left(\frac{x^k(x-1)^{k+1}}{k!}e^x\right)'=\frac{x^{k-1}(x-1)^{k+1}}{(k-1)!}e^x+\frac{(k+1)x^k(x-1)^k}{k!}e^x+\frac{x^k(x-1)^{k+1}}{k!}e^x=\\=\frac{x^{k-1}(x-1)^k}{(k-1)!}e^x\left[(x-1)+\frac{(k+1)x}{k}+\frac{x(x-1)}{k}\right]=\frac{x^{k-1}(x-1)^k}{(k-1)!}e^x\cdot\\\cdot\left[2x+\frac{x^2}{k}-1\right]=2k\frac{x^k(x-1)^k}{k!}e^x+\frac{x^{k+1}(x-1)^k}{k!}e^x-\frac{x^{k-1}(x-1)^k}{(k-1)!}e^x.
+              \end{multline*} Integrant aquesta igualtat entre 0 i 1 obtenim:
+              \begin{multline*}
+                  0=\left.\frac{x^k(x-1)^{k+1}}{k!}e^x\right|_0^1=\int_0^1\left(\frac{x^k(x-1)^{k+1}}{k!}e^x\right)'dx=2k\int_0^1\frac{x^k(x-1)^k}{k!}e^xdx+\\+\int_0^1\frac{x^{k+1}(x-1)^k}{k!}e^xdx-\int_0^1\frac{x^{k-1}(x-1)^k}{(k-1)!}e^xdx=2kA_k+B_k-C_{k-1},
+              \end{multline*}
+              on hem aplicat el teorema fonamental del càlcul. Agrupant la primera i última expressió es dedueix que $B_k=-2kA_k+C_{k-1}$.\par
+              Finalment, per provar l'equació \eqref{ck}, observem que:
+              \begin{multline*}
+                  C_k=\int_0^1\frac{x^k(x-1)^k(x-1)}{k!}e^xdx=\int_0^1\frac{x^{k+1}(x-1)^k}{k!}e^xdx-\int_0^1\frac{x^k(x-1)^k}{k!}e^xdx=\\=B_k-A_k.
+              \end{multline*}
+              Així doncs, de l'equació \eqref{ak} i aplicant la hipòtesi d'inducció obtenim:
+              \begin{equation}
+                  A_k=-B_{k-1}-C_{k-1}=-(p_{3k-2}-q_{3k-2}e)-(p_{3k-1}-q_{3k-1}e)=q_{3k}e-p_{3k}.
+                  \label{ak_final}
+              \end{equation}
+              De les equacions \eqref{bk} i \eqref{ak_final} i aplicant de nou la hipòtesi d'inducció obtenim:
+              \begin{equation}
+                  B_k=-2kA_k+C_{k-1}=-2k(q_{3k}e-p_{3k})+(p_{3k-1}-q_{3k-1}e)=p_{3k+1}-q_{3k+1}e.
+                  \label{bk_final}
+              \end{equation}
+              I, finalment, de les equacions \eqref{ck}, \eqref{ak_final} i \eqref{bk_final} obtenim: $$C_k=B_k-A_k=(p_{3k+1}-q_{3k+1}e)-(q_{3k}e-p_{3k})=p_{2k+2}-q_{3k+2}e.$$
+          \end{proof}
+          \begin{proof}[Demostració del teorema]
+              Observem que clarament $\displaystyle\lim_{m\to\infty} A_m=\lim_{m\to\infty} B_m=\\=\lim_{m\to\infty} C_m=0$. En efecte:
+              $$0\leq A_m=\int_0^1\frac{x^m(x-1)^m}{m!}e^xdx\leq \int_0^1\frac{1}{m!}e^xdx=\frac{e-1}{m!}\xrightarrow{m\to\infty}0.$$ Pel teorema del sandvitx, tenim que $\displaystyle\lim_{m\to\infty} A_m=0$. Es procedeix de manera similar per calcular $\displaystyle\lim_{m\to\infty} B_m$ i $\displaystyle\lim_{m\to\infty} C_m$.\par
+              Per tant, tenim que
+              \begin{gather*}
+                  \lim_{m\to\infty}A_m=\lim_{m\to\infty}q_{3m}e-p_{3m}=0\implies\lim_{m\to\infty}\frac{p_{3m}}{q_{3m}}=e,\\
+                  \lim_{m\to\infty}B_m=\lim_{m\to\infty}p_{3m+1}-q_{3m+1}e=0\implies\lim_{m\to\infty}\frac{p_{3m+1}}{q_{3m+1}}=e,\\
+                  \lim_{m\to\infty}C_m=\lim_{m\to\infty}p_{3m+2}-q_{3m+2}e=0\implies\lim_{m\to\infty}\frac{p_{3m+2}}{q_{3m+2}}=e.
+              \end{gather*}
+              I, per tant, per a qualsevol $n\in\mathbb{N}$ obtenim: $$\lim_{n\to\infty}\frac{p_n}{q_n}=e.\qquad\textnormal{\cite{1,4,5}}$$
+          \end{proof}
+          Així doncs amb aquest resultat podem calcular les diferents fraccions parcials que aproximen $e$. Per exemple, per als primers valors de $n$ tenim:\newpage
+          \begin{table}[!ht]
+              \centering
+              \begin{tabular}{|c|c|c|}
+                  \hline
+                  $n$ & $p_n/q_n$                         & Error en l'aproximació de $e$ \\
+                  \hline
+                  2   & $2$                               & $7.18281\times 10^{-1}$       \\[3pt]
+                  \hline
+                  3   & $3$                               & $2.81718\times 10^{-1}$       \\[3pt]
+                  \hline
+                  4   & $\displaystyle\frac{8}{3}$        & $5.16152\times 10^{-2}$       \\[3pt]
+                  \hline
+                  5   & $\displaystyle\frac{11}{4}$       & $3.17182\times 10^{-2}$       \\[3pt]
+                  \hline
+                  6   & $\displaystyle\frac{19}{7}$       & $3.99612\times 10^{-3}$       \\[3pt]
+                  \hline
+                  7   & $\displaystyle\frac{87}{32}$      & $4.68172\times 10^{-4}$       \\[3pt]
+                  \hline
+                  8   & $\displaystyle\frac{106}{39}$     & $3.33111\times 10^{-4}$       \\[3pt]
+                  \hline
+                  9   & $\displaystyle\frac{193}{71}$     & $2.80307\times 10^{-5}$       \\[3pt]
+                  \hline
+                  10  & $\displaystyle\frac{1264}{465}$   & $2.25857\times 10^{-6}$       \\[3pt]
+                  \hline
+                  11  & $\displaystyle\frac{1457}{536}$   & $1.75363\times 10^{-6}$       \\[3pt]
+                  \hline
+                  12  & $\displaystyle\frac{2721}{1001}$  & $1.10177\times 10^{-7}$       \\[3pt]
+                  \hline
+                  13  & $\displaystyle\frac{23225}{8544}$ & $6.74695\times 10^{-9}$       \\[3pt]
+                  \hline
+                  14  & $\displaystyle\frac{25946}{9545}$ & $5.51510\times 10^{-9}$       \\[3pt]
+                  \hline
+              \end{tabular}
+              \caption{Taula de valors utilitzant el mètode teòric}
+              \label{t2}
+          \end{table}
+          Notem que fixat un $r\in\mathbb{N}$, el terme de la successió $(p_n/q_n)$ més proper a $e$, satisfent que $q_n$ té $r$ dígits, correspon a la fracció amb $r$ xifres al denominador trobada mitjançant el mètode mitjançant programació (veure taula \ref{t1}).
+\end{enumerate}
+\printbibliography[heading=bibintoc,title={Referències}]
+\end{document}

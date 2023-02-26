@@ -1,0 +1,293 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[left=2.6cm,right=2.6cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings} 
+\usepackage{array}
+\usepackage[sorting=none,maxnames=10]{biblatex}
+\usepackage[catalan,english]{babel}
+\usepackage{csquotes}
+\usepackage{stmaryrd}
+\usepackage[affil-it]{authblk}
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
+
+\renewcommand{\lstlistingname}{Programa}
+
+%%% url symbol for references it is needed \usepackage{stmaryrd} %%%
+\newcommand\enllas{\raise.5pt\hbox{$\boxempty\kern-5.3pt{}^{\tiny\nearrow}$}\kern-2pt}
+
+\DeclareFieldFormat{url}{%
+  \ifhyperref
+    {\href{#1}{\enllas}}
+    {\url{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{references.bib}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{prop}{Proposició}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\CC}{\ensuremath{\mathbb{C}}}
+\renewcommand{\gcd}{\text{mcd}}
+\DeclareMathOperator{\lcm}{mcm}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+\lstloadlanguages{C,Python,bash}
+\lstset{ %
+        backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+        basicstyle=\color{red}\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+        breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+        breaklines=true,                 % sets automatic line breaking
+        captionpos=b,                    % sets the caption-position to bottom
+        deletekeywords={...},            % if you want to delete keywords from the given language
+        escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+        extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+        frame=single,                    % adds a frame around the code
+        keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+        keywordstyle=\color{darkblue},       % keyword style
+        commentstyle=\itshape\color{gray},
+        identifierstyle=\color{black},
+        language=C,                 % the language of the code
+        otherkeywords={*,...},           % if you want to add more keywords to the set
+        numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+        numbersep=5pt,                   % how far the line-numbers are from the code
+        numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+        rulecolor=\color{gray},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+        showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+        showstringspaces=false,          % underline spaces within strings only
+        showtabs=false,                  % show tabs within strings adding particular underscores
+        stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+        stringstyle=\color{blue},     % string literal style
+        tabsize=2,                         % sets default tabsize to 2 spaces
+        %title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+\lstset{literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+        {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+        {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+        {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+        {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+        {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+        {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+        {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+        {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+        {€}{{\EUR}}1 {£}{{\pounds}}1
+}
+
+
+\renewcommand{\labelenumii}{\alph{enumii})}
+
+\title{\bfseries\large LLIURAMENT VOLUNTARI 4}
+
+\author{Víctor Ballester Ribó\endgraf NIU:1570866}
+\date{\parbox{\linewidth}{\centering
+  Mètodes numèrics\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Abril de 2021}}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+Considerem l'aplicació
+\begin{align*}
+    F:\mathbb{A}^2 & \longrightarrow\mathbb{A}^2                \\
+    (x,y)          & \longmapsto(\max(x,y)-\min(x,y),\min(x,y))
+\end{align*} on $\mathbb{A}$ és $\NN\cup\{0\}$, $\QQ^+\cup\{0\}$ o $\RR^+\cup\{0\}$. Volem estudiar com es comporta la iteració \begin{equation}
+    (x_{n+1},y_{n+1})=F(x_n,y_n),
+    \label{iteracio}
+\end{equation} començant per un valor $(x_0,y_0)\ne(0,0)$\footnote{El cas $(x_0,y_0)=(0,0)$ és trivial ja que $\max(0,0)-\min(0,0)=0$ i $\min(0,0)=0$ i, per tant, $(x_n,y_n)=(0,0)$ $\forall n\in\NN$. És per això que no el considerarem en l'estudi de la iteració.} arbitrari.\par Comencem notant diversos fets generals sobre la iteració que no depenen de $\mathbb{A}$.\par El primer de tots és que efectivament la funció $F$ està ben definida en els conjunts de nombres no negatius. En efecte, $\max(x,y)-\min(x,y)\geq 0$ per a tot $x,y\in\mathbb{A}$ i $\min(x,y)$ és no negatiu per definició de $x$ i $y$.\par
+El segon fet és que la funció $F$ satisfà la propietat següent: $$F(\lambda a,\lambda b)=\lambda F(a,b),\quad\forall\lambda,a,b\in\mathbb{A}.$$ En efecte, tenint en compte que les funcions $\max(x,y)$ i $\min(x,y)$ les podem expressar com:
+\begin{equation}
+    \max(x,y)=\frac{x+y+|x-y|}{2},\qquad\min(x,y)=\frac{x+y-|x-y|}{2},
+    \label{maxmin}
+\end{equation} i notant que $\max(x,y)-\min(x,y)=|x-y|$, es compleix:
+\begin{equation}
+    F(\lambda a,\lambda b)=\left(|\lambda a-\lambda b|,\frac{\lambda a+\lambda b-|\lambda a-\lambda b|}{2}\right)=\lambda \left(|a-b|,\frac{a+b-|a-b|}{2}\right)=\lambda F(a,b).
+    \label{eq-lambda}
+\end{equation}
+Per últim, la successió $(y_n)$ és decreixent. En efecte, $y_{n+1}=\min(x_n,y_n)\leq y_n$, per a tot $n\in\NN\cup\{0\}$. Com que treballem només amb nombres no negatius, tenim que $(y_n)$ està acotada ($0\leq y_n\leq y_0$ $\forall n\in\mathbb{N}\cup\{0\}$) i, en conseqüència, és convergent. Sigui $\displaystyle\beta:=\lim_{n\to\infty}y_n$. Ara bé, és clar que la convergència de $(y_n)$ implica immediatament la de $(x_n)$, per la definició de l'aplicació $F$. Anomenem $\displaystyle\alpha:=\lim_{n\to\infty}x_n$. Tenint en compte les equacions de \eqref{maxmin}, la iteració en el límit satisfà:
+\begin{multline*}
+    \left\{\begin{array}{l}
+        x_{n+1}=\max(x_n,y_n)-\min(x_n,y_n)=|x_n-y_n| \\
+        y_{n+1}=\min(x_n,y_n)=\frac{x_n+y_n-|x_n-y_n|}{2}
+    \end{array}\right.\iff\left\{\begin{array}{l}
+        \alpha=|\alpha-\beta| \\
+        \beta=\frac{\alpha+\beta-|\alpha-\beta|}{2}
+    \end{array}\right.\iff\\\iff\beta=\frac{\alpha+\beta-\alpha}{2}\iff\beta=0.
+\end{multline*}
+Per tant, concloem que $\displaystyle\lim_{n\to\infty}y_n=0$ independentment de $\mathbb{A}$. Notem que del límit $\displaystyle\lim_{n\to\infty}x_n$ no podem dir res. És per això que per facilitar l'enteniment d'aquesta iteració dividirem el seu estudi en els diferents casos de $\mathbb{A}$.\par Abans, però, notem que si $(x_0,y_0)=(0,a)$ per a un cert $a\in\mathbb{A}$, tenim que $(x_n,y_n)=(a,0)$ $\forall n\in\mathbb{N}$. De forma similar, si $(x_0,y_0)=(a,0)$, aleshores $(x_n,y_n)=(a,0)$ $\forall n\in\mathbb{N}\cup\{0\}$. Per tant, aquests dos casos tampoc els considerarem a continuació.\par Passem ara a estudiar els casos particulars.
+\begin{enumerate}
+    \item Cas $\mathbb{A}=\NN\cup\{0\}$\par
+          Considerem primer el cas on $x_0=p$ i $y_0=q$ amb $\gcd(p,q)=1$. Hem vist que la successió $y_n$ convergeix cap a 0. Sense pèrdua de generalitat podem suposar $p>q$\footnote{El cas $p=q=1$ és també immediat. En efecte, si $(x_0,y_0)=(1,1)$, aleshores $(x_1,y_1)=(0,1)$ i $(x_n,y_n)=(1,0)$ $\forall n\in\mathbb{N}\setminus\{1\}$.}. Notem que en aquest cas tenim que $F(p,q)=(p-q,q)$. Ara bé, per una propietat del màxim comú divisor de dos nombres es compleix $$\gcd(p-q,q)=\gcd(p,q)=1.$$ Per tant, tornem a obtenir dos nombres coprimers ($p-q$ i $q$). Procedint d'aquesta manera per a cada iteració deduïm que
+          \begin{equation}
+              \gcd(x_n,y_n)=1\quad\forall n\in\NN\cup\{0\}: x_n,y_n\ne0.
+              \label{eq1}
+          \end{equation} Ara bé, tenint en compte això, intentem reconstruir ara la successió partint del valor límit $(\alpha,0)$. Suposem que $(x_N,y_N)=(\alpha,0)$ i $(x_{N-1},y_{N-1})\ne(\alpha,0)$ per algun $N\in\NN$. Clarament aquest $N$ existeix. Com que hem suposat que $(x_N,y_N)\ne(x_{N-1},y_{N-1})$, només tenim un únic cas possible: $(x_{N-1},y_{N-1})=(0,\alpha)$. Ara bé, d'aquí deduïm que $(x_{N-2},y_{N-2})=(\alpha,\alpha)$. Però observem que $\gcd(x_{N-2},y_{N-2})=\gcd(\alpha,\alpha)=\alpha$ i la condició \eqref{eq1} només es compleix si $\alpha=1$ (o $\alpha=0$, però llavors és el cas trivial). Per tant, hem vist que si $\gcd(x_0,y_0)=1$, aleshores $\displaystyle\lim_{n\to\infty}(x_n,y_n)=(1,0)$.\par Considerem ara dos nombres $a,b\in\NN$ arbitraris i sigui $d:=\gcd(a,b)$. D'aquí es dedueix que $a=dr$ i $b=ds$ per a certs $r,s\in\NN$ coprimers entre si. Per tant, per l'equació \eqref{eq-lambda} tenim que $$F(a,b)=F(dr,sd)=dF(r,s).$$ Això mostra que podem reduir el problema al cas en què iterem dos nombres coprimers. És a dir, en general tenim:
+          \begin{multline*}
+              \lim_{n\to\infty}(x_{n+1},y_{n+1})=\lim_{n\to\infty}F(x_n,y_n)=\\=\lim_{n\to\infty}F\left(\gcd(x_0,y_0)\frac{x_n}{\gcd(x_0,y_0)},\gcd(x_0,y_0)\frac{y_n}{\gcd(x_0,y_0)}\right)=\\=\gcd(x_0,y_0)\lim_{n\to\infty}F\left(\frac{x_n}{\gcd(x_0,y_0)},\frac{y_n}{\gcd(x_0,y_0)}\right)=\gcd(x_0,y_0)(1,0)=\\=(\gcd(x_0,y_0),0).
+          \end{multline*}
+    \item Cas $\mathbb{A}=\QQ^+\cup\{0\}$\par
+          Havent resolt el cas anterior, ara aquest és més senzill. Considerem dos nombres racionals $\frac{p}{q}$ i $\frac{r}{s}$ complint $\gcd(p,q)=\gcd(r,s)=1$. Per l'equació \eqref{eq-lambda} tenim que \begin{equation*}
+              F\left(\frac{p}{q},\frac{r}{s}\right)=F\left(\frac{1}{qs}ps,\frac{1}{qs}qr\right)=\frac{1}{qs}F(ps,qr).
+          \end{equation*} Ara bé, $ps,qr\in\NN$, per tant podem aplicar l'apartat anterior de manera que agafant $x_0=ps$ i $y_0=qr$ tenim: $$\lim_{n\to\infty}(x_n,y_n)=(\gcd(ps,qr),0).$$ Una de les propietats del màxim comú divisor és que per a tot $a,b,c,d\in\ZZ$ tenim
+          \begin{multline*}
+              \gcd(ab,cd)=\gcd(a,c)\gcd(b,d)\gcd\left(\frac{a}{\gcd(a,c)},\frac{d}{\gcd(b,d)}\right)\cdot\\\cdot\gcd\left(\frac{c}{\gcd(a,c)},\frac{b}{\gcd(b,d)}\right).\qquad\text{\cite{gcd}}
+          \end{multline*} A més, sabem que $\gcd(a,b)\lcm(a,b)=|ab|$ $\forall a,b\in\ZZ$. Per tant, en el nostre cas inicial on $x_0=\frac{p}{q}$ i $y_0=\frac{r}{s}$ tenim:
+          \begin{multline*}
+              \lim_{n\to\infty}(x_n,y_n)=\frac{1}{qs}(\gcd(ps,qr),0)=\\=\left(\frac{\gcd(p,q)\gcd(s,r)\gcd\left(\frac{p}{\gcd(p,q)},\frac{r}{\gcd(s,r)}\right)\gcd\left(\frac{q}{\gcd(p,q)},\frac{s}{\gcd(s,r)}\right)}{qs},0\right)=\\=\left(\gcd(p,r)\frac{\gcd(q,s)}{qs},0\right)=\left(\frac{\gcd(p,r)}{\lcm(q,s)},0\right).
+          \end{multline*}
+    \item Cas $\mathbb{A}=\RR^+\cup\{0\}$\par Aquest cas d'entrada pot semblar el més difícil de tots. No obstant això, fent servir el fet que donat qualsevol nombre $r\in\mathbb{R}$ i $\varepsilon>0$ existeixen successions $(p_n),(q_n)\in\ZZ$ i un $n_0\in\mathbb{N}$ tals que $$\left|\frac{p_n}{q_n}-r\right|<\varepsilon\quad\forall n\geq n_0,$$ podrem reduir la seva dificultat.\par El cas més senzill de tots és quan considerem dos nombres irracionals $x,y$ tals que $x=ry$ per a algun $r=\frac{p}{q}\in\QQ$. En aquest cas tenim que $(x,y)=x\left(1,\frac{p}{q}\right)$ i aplicant la fórmula \eqref{eq-lambda} podem reduir el problema a calcular la iteració amb valors inicials $(x_0,y_0)=\left(1,\frac{p}{q}\right)$. Així doncs, la iteració inicial convergirà cap a $x\left(\frac{\gcd(1,p)}{\lcm(1,q)},0\right)=\left(\frac{x}{q},0\right)$.\par
+          Passem a estudiar ara la iteració partint de dos nombres inicials $x_0,y_0\in\RR^+\setminus\QQ^+$ tals que $\nexists r\in\QQ^+$ complint $x_0=ry_0$.\par
+          És intuïtiu pensar (vegeu \cite{1}) que donats dos nombres $a,b\in\NN$ prou grans, el quocient $\frac{\gcd(a,b)}{\lcm(a,b)}$ és petit. De fet, en \cite{1} es prova que donats dos nombres aleatoris $a,b\in\NN$, la probabilitat que tinguem $\gcd(a,b)=k$ és $\frac{6}{k^2\pi^2}$. Per tant, la probabilitat que tinguem $\gcd(a,b)\leq k$ és $$P(\gcd(a,b)\leq k)=\sum_{n=1}^k\frac{6}{k^2\pi^2}=\frac{6}{\pi^2}\sum_{n=1}^k\frac{1}{k^2}.$$ Per exemple, per $k=1000$ tenim $P(\gcd(a,b)\leq k)\approx0.99939177$. Això ens afirma que per a nombres grans $a,b,c,d\in\NN$ ($a,b,c,d\gg1000$), el quocient $\frac{\gcd(a,b)}{\lcm(c,d)}$ és petit. Per tant, si aproximem dos nombres irracionals $x$ i $y$ amb fraccions grans, tindrem que la iteració $(x_{n+1},y_{n+1})=F(x_n,y_n)$ començant per $x_0=x$ i $y_0=y$ tendirà cap a $(0,0)$.\par
+          Notem que si considerem un nombre $r\in\mathbb{R}^+$ i un altre $\frac{p}{q}\in\mathbb{Q}^+$ i comencem la iteració \eqref{iteracio} per a $x_0=r$ i $y_0=\frac{p}{q}$ ocorrerà una cosa similar. En aproximar $r$ per una fracció gran $\frac{a}{b}$, és a dir $a,b\gg p,q$, tindrem que $\gcd(a,p)\lll\lcm(b,q)$ i, per tant, la iteració també tendirà cap a $(0,0)$.
+\end{enumerate}
+Com a conclusió obtenim que si $(x_{n+1},y_{n+1})=F(x_n,y_n)$, llavors: $$\lim_{n\to\infty}(x_n,y_n)=\left\{\begin{array}{ccc}
+        (a,0)                                      & \text{si} & (x_0,y_0)=(a,0) \text{ o }(x_0,y_0)=(0,a),\ a\in\mathbb{A}                  \\
+        \left(\frac{\gcd(p,r)}{\lcm(q,s)},0\right) & \text{si} & (x_0,y_0)=\left(\frac{p}{q},\frac{r}{s}\right)\in(\QQ^+)^2                  \\
+        \left(\frac{x_0}{q},0\right)               & \text{si} & (x_0,y_0)\in(\RR^+)^2\setminus(\QQ^+)^2:\frac{x_0}{y_0}=\frac{p}{q}\in\QQ^+ \\
+        (0,0)                                      & \text{si} & (x_0,y_0)\in(\RR^+)^2\setminus(\QQ^+)^2:\frac{x_0}{y_0}\notin\QQ^+
+    \end{array}\right.$$
+Posem ara uns quants exemples per verificar el nostre resultat. El programa de l'annex \ref{appendix1} calcula la llista de termes $(x_n,y_n)$ fins que s'arriba a la convergència.\par A la taula \ref{tab:rational} es mostren alguns exemples en el cas $(x_0,y_0)\in(\QQ^+)^2$.\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        $x_0=13$, $y_0=48$ & $x_0=12$, $y_0=92$ & $x_0=13/43$, $y_0=48/7$ & $x_0=11/6$, $y_0=33/2$ \\
+        \hline
+        \hline
+        (13,48)            & (12,92)            & (13/43,48/7)            & (11/6,33/2)            \\
+        \hline
+        (35,13)            & (80,12)            & (1973/301,13/43)        & (44/3,11/6)            \\
+        \hline
+        (22,13)            & (68,12)            & (1882/301,13/43)        & (77/6,11/6)            \\
+        \hline
+        (9,13)             & (56,12)            & (1791/301,13/43)        & (11,11/6)              \\
+        \hline
+        (4,9)              & (44,12)            & (1700/301,13/43)        & (55/6,11/6)            \\
+        \hline
+        (5,4)              & (32,12)            & \vdots                  & (22/3,11/6)            \\
+        \hline
+        (1,4)              & (20,12)            & (1/301,4/301)           & (11/2,11/6)            \\
+        \hline
+        (3,1)              & (8,12)             & (3/301,1/301)           & (11/3,11/6)            \\
+        \hline
+        (2,1)              & (4,8)              & (2/301,1/301)           & (11/6,11/6)            \\
+        \hline
+        (1,1)              & (4,4)              & (1/301,1/301)           & (0,11/6)               \\
+        \hline
+        (0,1)              & (0,4)              & (0,1/301)               & (11/6,0)               \\
+        \hline
+        (1,0)              & (4,0)              & (1/301,0)               & (11/6,0)               \\
+        \hline
+        (1,0)              & (4,0)              & (1/301,0)               & (11/6,0)               \\
+        \hline
+    \end{tabular}
+    \caption{Llista del iterats $(x_{n+1},y_{n+1})=F(x_n,y_n)$ partint de diversos valors racionals. Notem que $\gcd(13,48)=1$, $\gcd(12,92)=4$, $\lcm(43,7)=301$, $\gcd(11,33)=11$ i $\lcm(6,2)=6$, fet que concorda amb els respectius límits calculats amb el programa.}
+    \label{tab:rational}
+\end{table}
+Intentem calcular el límit de la iteració $(x_{n+1},y_{n+1})=F(x_n,y_n)$ quan $x_0=\pi$ i $y_0=e$. Per això aproximem aquests dos nombres irracionals amb fraccions racionals tal com mostra la taula \ref{aprox}.\par
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        $n$ & Aproximació                                                                                                                                                                 & Error              \\
+        \hline
+        \hline
+            & Aproximació de $\pi$                                                                                                                                                        &                    \\
+        \hline
+        6   & $\frac{833719}{265381}$                                                                                                                                                     & $\approx10^{-11}$  \\[3pt]
+        \hline
+        30  & $\frac{126016265525921254632388702258}{40112223136862338672703310447}$                                                                                                      & $\approx10^{-59}$  \\[3pt]
+        \hline
+        80  & $\frac{32453217591853622646417752998249336691000299901235050015802623999018874538939109}{10330179997960719808036321264504198830639787933364004574194339214204783331186776}$ & $\approx10^{-158}$ \\[3pt]
+        \hline
+        \hline
+            & Aproximació de $e$                                                                                                                                                          &                    \\
+        \hline
+        6   & $\frac{566827}{208524}$                                                                                                                                                     & $\approx10^{-11}$  \\[3pt]
+        \hline
+        30  & $\frac{3484723409018871077161865719}{1281958100346905721677838240}$                                                                                                         & $\approx10^{-55}$  \\[3pt]
+        \hline
+        80  & $\frac{57767811200811497589282444668226425425947708491940656462390771886567192252464177}{21251590102251920145277098286135785896244905020439924104531792746908223808871176}$ & $\approx10^{-159}$ \\[3pt]
+        \hline
+    \end{tabular}
+    \caption{Aproximacions racionals de $\pi$ i $e$ amb diferents nombres de dígits $n$ en el numerador}
+    \label{aprox}
+\end{table}
+Si calculem la iteració \eqref{iteracio} començant pels valors aproximats de la taula \ref{aprox}, obtenim els resultats que es mostren a la taula \ref{pi-e}.\par
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Dígits en les aproximacions & Valor límit                       & Nombre d'iteracions \\
+        \hline
+        6                           & $\approx(6.869\times10^{-12},0)$  & 99                  \\
+        \hline
+        30                          & $\approx(8.497\times10^{-59},0)$  & 991                 \\
+        \hline
+        80                          & $\approx(2.039\times10^{-160},0)$ & 5832                \\
+        \hline
+    \end{tabular}
+    \caption{Valors aproximats del iterats $(x_{n+1},y_{n+1})=F(x_n,y_n)$ partint de $(x_0,y_0)=(\pi,e)$}
+    \label{pi-e}
+\end{table}
+D'aquí podem observar clarament que si poguéssim aproximar $\pi$ i $e$ amb tants dígits com volguéssim, tindríem $\displaystyle\lim_{n\to\infty}(x_n,y_n)=(0,0)$.
+\newpage
+\appendix
+\section{Programa en Python}\label{appendix1}
+\begin{lstlisting}[language=Python, caption={Programa que calcula el nombre i la llista de termes $(x_n,y_n)$ de la successió donada per \eqref{iteracio}}]
+def F(x,y):
+    return (max(x,y)-min(x,y),min(x,y))
+def aproximacio(digits,numero):
+    L=continued_fraction(numero);
+    i=0;
+    G,r=[L[0]],[L[0]]
+    while len(str(numerator(r[i])))<=digits:
+        i=i+1
+        G.append(L[i])
+        s=continued_fraction(G).value()
+        r.append(s)
+    r=r.pop()
+    return r
+def iteracio_racional(x0,y0):
+    L=[(x0,y0)]
+    L.append(F(L[0][0],L[0][1]))
+    k=1
+    while L[k][1]!=0:
+        L.append(F(L[k][0],L[k][1]))
+        k=k+1
+    return k,L
+def iteracio_real(x,y,digits):
+    if(x/y in QQ and x not in QQ and y not in QQ):
+        return iteracio_racional(x,y)
+    if(x in QQ and y in QQ):
+        x,y=Rational(x),Rational(y)
+    elif(x in QQ and y not in QQ):
+        x=Rational(x)
+        y=aproximacio(digits,y)
+    elif(x not in QQ and y in QQ):
+        x=aproximacio(digits,x)
+        y=Rational(y)
+    else:
+        x=aproximacio(digits,x)
+        y=aproximacio(digits,y)
+    return iteracio_racional(x,y)
+\end{lstlisting}
+\printbibliography[heading=bibintoc,title={Referències}]
+\end{document}

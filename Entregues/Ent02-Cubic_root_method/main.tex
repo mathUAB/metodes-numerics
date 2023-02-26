@@ -1,0 +1,232 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[left=2.8cm,right=2.8cm,top=2.8cm,bottom=2.8cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{array}
+\usepackage[sorting=none,maxnames=10]{biblatex}
+\usepackage[catalan,english]{babel}
+\usepackage{csquotes}
+\usepackage{stmaryrd}
+\usepackage[affil-it]{authblk}
+\usepackage{multirow}
+
+%%% url symbol for references it is needed \usepackage{stmaryrd} %%%
+\newcommand\enllas{\raise.5pt\hbox{$\boxempty\kern-4.85pt{}^{\tiny\nearrow}$}\kern-2pt}
+
+\DeclareFieldFormat{url}{%
+  \ifhyperref
+    {\href{#1}{\enllas}}
+    {\url{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{references.bib}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{prop}{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+
+\renewcommand{\arraystretch}{1.75}
+\renewcommand{\labelenumii}{\alph{enumii})}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\title{\bfseries\large LLIURAMENT VOLUNTARI 2}
+
+\author{Víctor Ballester Ribó\endgraf NIU:1570866}
+\date{\parbox{\linewidth}{\centering
+  Mètodes numèrics\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Març de 2021}}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+\subsection{Mètode clàssic per calcular l'arrel quadrada}
+Primer de tot comencem explicant el mètode clàssic de l'arrel quadrada amb un exemple. Volem calcular $\sqrt{33}$. Procedirem de la manera següent:
+\begin{multline*}
+    \arraycolsep=0.2pt
+    \renewcommand\arraystretch{1}
+    \begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt{33\:}} &    & 5\quad\textcolor{white}{.}                        \\
+        \cline{10-11}
+                                        & -2 & 5                          &  &  &  &  &  &  &  & \\
+        \cline{2-3}
+                                        &    & 8                          &  &  &  &  &  &  &  &
+    \end{array}\textcolor{red}{\implies}
+    \begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt{33\quad\;}} &    & 5                                                                                            \\
+        \cline{10-11}
+                                             & -2 & 5 &   &   &  &  &  &  &  & 10\boxed{\textcolor{white}{7}}\times\boxed{\textcolor{white}{7}}= \\
+        \cline{2-3}
+                                             &    & 8 & 0 & 0 &  &  &  &  &  &
+    \end{array}\textcolor{red}{\implies}\begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt{33\qquad\:}} &    & 5.7                                                                                                \\
+        \cline{10-11}
+                                              & -2 & 5   &   &   &   &   &  &  &  & 107\times 7=749                                                     \\
+        \cline{2-3}
+                                              &    & 8   & 0 & 0 &   &   &  &  &  & 114\boxed{\textcolor{white}{4}}\times \boxed{\textcolor{white}{4}}= \\
+                                              & -  & 7   & 4 & 9 &   &   &  &  &  &                                                                     \\
+        \cline{2-5}
+                                              &    &     & 5 & 1 & 0 & 0 &  &  &  &
+    \end{array}\textcolor{red}{\implies}\\\arraycolsep=0.2pt
+    \renewcommand\arraystretch{1}\textcolor{red}{\implies}
+    \begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt{33\qquad\quad\:}} &    & 5.74                                                                                                  \\
+        \cline{10-11}
+                                                   & -2 & 5    &   &   &   &   &   &   &  & 107\times 7=749                                                     \\
+        \cline{2-3}
+                                                   &    & 8    & 0 & 0 &   &   &   &   &  & 1144\times 4=4576                                                   \\
+                                                   & -  & 7    & 4 & 9 &   &   &   &   &  & 1148\boxed{\textcolor{white}{9}}\times\boxed{\textcolor{white}{9}}= \\
+        \cline{2-5}
+                                                   &    &      & 5 & 1 & 0 & 0 &   &   &  &                                                                     \\
+                                                   & -  &      & 4 & 5 & 7 & 6 &   &   &  &                                                                     \\
+        \cline{2-7}
+                                                   &    &      &   & 5 & 2 & 4 & 0 & 0 &  &
+    \end{array}\textcolor{red}{\implies}
+    \begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt{33\qquad\quad\:}} &    & 5.744                                                 \\
+        \cline{10-11}
+                                                   & -2 & 5     &   &   &   &   &   &   &  & 107\times 7=749    \\
+        \cline{2-3}
+                                                   &    & 8     & 0 & 0 &   &   &   &   &  & 1144\times 4=4576  \\
+                                                   & -  & 7     & 4 & 9 &   &   &   &   &  & 11484\times4=45939 \\
+        \cline{2-5}
+                                                   &    &       & 5 & 1 & 0 & 0 &   &   &  &                    \\
+                                                   & -  &       & 4 & 5 & 7 & 6 &   &   &  &                    \\
+        \cline{2-7}
+                                                   &    &       &   & 5 & 2 & 4 & 0 & 0 &  &                    \\
+                                                   & -  &       &   & 4 & 5 & 9 & 3 & 9 &  &                    \\
+        \cline{2-9}
+                                                   &    &       &   &   & 6 & 4 & 6 & 4 &  &                    \\
+    \end{array}
+\end{multline*}
+El començament de l'algoritme es basa a trobar el nombre natural més gran que elevat al quadrat sigui menor al nombre al qual volem calcular la seva arrel quadrada. En aquest cas, tenim que $5^2=25<33$ i $6^2=36>33$. Per tant, el nombre escollit és 5. Un cop el tenim, anotem el seu quadrat sota el 33, fem la resta entre els dos i afegim dos zeros al costat del nombre resultant, el 8. D'altra banda, sota el 5, dupliquem el valor de l'aproximació trobada ($5\times 2=10$) i busquem el nombre de 0 a 9 més gran, tal que $10\boxed{\textcolor{white}{7}}\times\boxed{\textcolor{white}{7}}\leq800$. Aquest és el 7. Així doncs, apuntem el 7 al costat del 5 (havent-hi afegit degudament el punt decimal) i també el valor $107\times 7=749$ sota el 800. Fem la resta entre 800 i 749 i al valor obtingut li afegim 2 zeros. D'altra banda, dupliquem l'aproximació feta fins ara (pensada com a nombre enter, és a dir, $5.7\to57$ i per tant, $57\times 2=114$) i l'apuntem a la columna de la dreta. Ara busquem el nombre de 0 a 9 més gran, tal que $114\boxed{\textcolor{white}{4}}\times\boxed{\textcolor{white}{4}}\leq5100$. Aquest és el 4. Així doncs, l'apuntem a dalt a la dreta al costat del 5.7 i calculem el valor $1144\times 4=4576$ per restar-lo a 5100. Seguint aquest procés de forma anàloga, cada cop obtenim una millor aproximació de $\sqrt{33}$.
+\subsubsection{Justificació de l'algoritme}
+Sigui $x\in\mathbb{R}$. Volem calcular $\sqrt{x}$. Suposem que tenim una aproximació $\Tilde{x}_0\in\mathbb{N}$ satisfent $\Tilde{x}_0\leq\sqrt{x}<\Tilde{x}_0+1$. L'algoritme es basa en un mètode recursiu en què en cada pas $k\in\mathbb{N}$ es busca un nombre $\delta_k\in\mathbb{R}$ positiu de la forma $\delta_k=n\times10^{-k}$, $n\in\{0,1,\ldots,9\}$, tal que $$\Tilde{x}_{k-1}\leq\Tilde{x}_{k-1}+\delta_k\leq\sqrt{x}.$$ Aquest nou valor $\Tilde{x}_{k-1}+\delta_k$ serà la nova aproximació $x_k$, és a dir, $\Tilde{x}_k:=\Tilde{x}_{k-1}+\delta_k$. Ara bé, de la desigualtat anterior deduïm que:
+\begin{align}
+    \nonumber\Tilde{x}_{k-1}+\delta_k                                & \leq\sqrt{x},                      \\
+    \nonumber(\Tilde{x}_{k-1}+\delta_k)^2                            & \leq x,                            \\
+    \nonumber\Tilde{x}_{k-1}^2+2\Tilde{x}_{k-1}\delta_k+\delta_k^2   & \leq x,                            \\
+    \nonumber\delta_k(2\Tilde{x}_{k-1}+\delta_k)                     & \leq x-\Tilde{x}_{k-1}^2,          \\
+    \nonumber10^{2k}\delta_k(2\Tilde{x}_{k-1}+\delta_k)              & \leq 10^{2k}(x-\Tilde{x}_{k-1}^2), \\
+    \nonumber(10^k\delta_k)(2\Tilde{x}_{k-1}\times10^k+10^k\delta_k) & \leq 10^{2k}(x-\Tilde{x}_{k-1}^2), \\
+    n(2\Tilde{x}_{k-1}\times10^k+n)                                  & \leq 10^{2k}(x-\Tilde{x}_{k-1}^2).
+    \label{eq1}
+\end{align}
+El fet de multiplicar per $10^{2k}$ ambdós costats de la desigualtat ho fem per no haver de treballar amb decimals i treballar així amb nombres enters, tot i que ho podríem fer perfectament sense aquest últim pas. Observem que, en el pas $k$-èssim, el nombre $2\Tilde{x}_{k-1}$ té $k-1$ xifres decimals i, per tant, multiplicant per $10^k$ obtindrem al final del nombre $2\Tilde{x}_{k-1}\times10^k$ el dígit 0, que és el que ens permet fer $2\Tilde{x}_{k-1}\times10^k+n=(2\Tilde{x}_{k-1}\times10^{k-1})\boxed{\textcolor{white}{n}}$. I aleshores:
+\begin{equation}
+    (2\Tilde{x}_{k-1}\times10^k+n)n=(2\Tilde{x}_{k-1}\times10^{k-1})\boxed{\textcolor{white}{n}}\times\boxed{\textcolor{white}{n}}.
+    \label{eq2}
+\end{equation}
+Per veure que $10^{2k}(x-\Tilde{x}_{k-1}^2)$ és exactament el nombre que no volem sobrepassar escollint l'$n$ en qüestió, fixem-nos que en cada pas $k$, els nombres $r_{k-1}$ resultants de les restes que fem a la columna de l'esquerra (havent afegit el parell de zeros a continuació) satisfan
+\begin{equation}
+    x=x_{k-1}^2+\frac{r_{k-1}}{10^{2k}}.
+    \label{eq3}
+\end{equation}Tenint en compte les equacions \eqref{eq1}, \eqref{eq2} i \eqref{eq3} tenim que
+\begin{equation*}
+    (2\Tilde{x}\times10^{k-1})\boxed{\textcolor{white}{n}}\times\boxed{\textcolor{white}{n}}=(2\Tilde{x}_k\times10^k+n)n\leq 10^{2k}(x-\Tilde{x}_k^2)=r_k.
+\end{equation*}
+Per a una major claredat, a la taula següent mostrem els valors de $r_k$ que hem utilitzat en l'exemple anterior:\par
+\begin{table}[ht]
+    \centering
+    \renewcommand\arraystretch{1.3}
+    \begin{tabular}{c|c}
+        $k$ & $r_k$  \\
+        \hline\hline
+        0   & 800    \\
+        1   & 5100   \\
+        2   & 52400  \\
+        3   & 646400
+    \end{tabular}
+    \caption{Valors dels primers nombres $r_k$ en el cas del càlcul de $\sqrt{33}$}
+    \label{tab:my_label}
+\end{table}
+D'aquesta manera acaba la demostració del mètode clàssic pel càlcul de l'arrel quadrada.
+\cite{1}
+\subsection{Mètode proposat per calcular l'arrel cúbica}
+Per a la creació d'un algoritme que calculi l'arrel cúbica d'un nombre seguirem un procediment anàleg al descrit a l'apartat anterior, però adaptat a l'arrel cúbica. Observem abans, però, que calcular l'arrel cúbica d'un nombre negatiu $y\in\mathbb{R}$ és equivalent a calcular l'arrel cúbica de $-y$, que és positiva, i el resultat multiplicar-lo per $-1$. Així doncs, ens podem reduir al cas de calcular l'arrel cúbica d'un nombre $y\in\mathbb{R}$ positiu. Per fer això, comencem prenent el major nombre $\Tilde{y}_0\in\mathbb{N}$ tal que $\Tilde{y}_0^3\leq y<(\Tilde{y}_0+1)^3$. Un cop trobat aquest nombre, per a cada pas $k\in\mathbb{N}$, volem trobar un $\delta_k\in\mathbb{R}$ positiu de la forma $\delta_k=n\times10^{-k}$, $n\in\{0,1,\ldots,9\}$, tal que $$\Tilde{y}_{k-1}\leq\Tilde{y}_{k-1}+\delta_k\leq\sqrt[3]{y}.$$ Aquest nou valor $\Tilde{y}_{k-1}+\delta_k$ serà la nova aproximació $y_k$, és a dir, $\Tilde{y}_k:=\Tilde{y}_{k-1}+\delta_k$. Tenint en compte l'anterior desigualtat tenim que:
+\begin{align*}
+    \Tilde{y}_{k-1}+\delta_k                                                                      & \leq\sqrt[3]{y}                   \\
+    (\Tilde{y}_{k-1}+\delta_k)^3                                                                  & \leq y                            \\
+    \Tilde{y}_{k-1}^3+3\Tilde{y}_{k-1}^2\delta_k+3\Tilde{y}_{k-1}\delta_k^2+\delta_k^3            & \leq y                            \\
+    3\Tilde{y}_{k-1}\delta_k(\Tilde{y}_{k-1}+\delta_k)+\delta_k^3                                 & \leq y-\Tilde{y}_{k-1}^3          \\
+    10^{3k}\left[3\Tilde{y}_{k-1}\delta_k(\Tilde{y}_{k-1}+\delta_k)+\delta_k^3\right]             & \leq 10^{3k}(y-\Tilde{y}_{k-1}^3) \\
+    (3\Tilde{y}_{k-1}\times10^k)(10^k\delta_k)(10^k\Tilde{y}_{k-1}+10^k\delta_k)+(10^k\delta_k)^3 & \leq 10^{3k}(y-\Tilde{y}_{k-1}^3) \\
+    (3\Tilde{y}_{k-1}\times10^k)n(10^k\Tilde{y}_{k-1}+n)+n^3                                      & \leq 10^{3k}(y-\Tilde{y}_{k-1}^3)
+\end{align*}
+De forma similar, com hem explicat anteriorment, multipliquem ambdós costats de la desigualtat per $10^{3k}$, per tal de no treballar amb decimals, però aquest pas ens el podríem haver estalviat.\par A la pràctica aquest mètode difereix principalment en dos aspectes respecte de l'algoritme del càlcul de l'arrel quadrada. En primer lloc, en restar al nombre $y$ l'aproximació $\Tilde{y}_{k-1}$, en el pas $k$, haurem d'afegir 3 zeros al costat del nombre resultant, per tal d'obtenir els nombres $s_{k-1}$ (equivalents als $r_{k-1}$, de l'apartat anterior). Notem que, en efecte: $$y=\Tilde{y}_{k-1}^3+\frac{s_{k-1}}{10^{3k}}.$$ La segona diferència rau a l'hora de buscar un $n$ adient per millorar l'aproximació de $\sqrt[3]{y}$. En aquest cas, caldrà buscar un $n$ tal que $$(3\Tilde{y}_{k-1}\times10^k)\times(10^{k-1}\Tilde{y}_{k-1})\boxed{\textcolor{white}{n}}\times\boxed{\textcolor{white}{n}}+\boxed{\textcolor{white}{n}}^3\leq 10^{3k}(y-\Tilde{y}_{k-1}^3)=s_{k-1}.$$
+Aquí cal fer un parell d'observacions. Per començar de la manera com hem escollit $\Tilde{y}_0$, tenim que en cada pas $k$ de l'algoritme, l'aproximació $\Tilde{y}_{k-1}$ té exactament $k-1$ decimals. Per tant, és correcte fer $(10^k\Tilde{y}_{k-1}+n)=(10^{k-1}\Tilde{y}_{k-1})\boxed{\textcolor{white}{n}}$. D'altra banda, podem notar que pel fet que acabem de comentar que $\Tilde{y}_{k-1}$ té $k-1$ decimals, l'operació $3\Tilde{y}_{k-1}\times10^k$ és el mateix que $(3\Tilde{y}_{k-1}\times10^{k-1})0$, que és potser una operació més ràpida de fer mentalment\footnote{Al cap i a la fi, el nombre $3\Tilde{y}_{k-1}\times10^{k-1}$ és el nombre $3\Tilde{y}_{k-1}$ esborrant el punt decimal.}.\par
+Procedint així, per a cada $k$, obtindrem cada cop un dígit exacte més en l'aproximació de $\sqrt[3]{y}$.
+\subsubsection{Exemple de càlcul}
+Posem ara un exemple del càlcul de $\sqrt[3]{33}$. El procediment és anàleg a l'utilitzat en el primer exemple, amb la implementació que s'acaba de comentar.
+\begin{equation*}
+    \arraycolsep=0.2pt
+    \renewcommand\arraystretch{1}
+    \begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt[3]{33\:}} &    & 3\quad\textcolor{white}{.}                        \\
+        \cline{10-11}
+                                           & -2 & 7                          &  &  &  &  &  &  &  & \\
+        \cline{2-3}
+                                           &    & 6                          &  &  &  &  &  &  &  &
+    \end{array}\textcolor{red}{\implies}
+    \begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt[3]{33\qquad}} &    & 3                                                                                                                                    \\
+        \cline{10-11}
+                                               & -2 & 7 &   &   &   &  &  &  &  & 90\times 3\boxed{\textcolor{white}{7}}\times\boxed{\textcolor{white}{7}}+\boxed{\textcolor{white}{7}}^3= \\
+        \cline{2-3}
+                                               &    & 6 & 0 & 0 & 0 &  &  &  &  &
+    \end{array}\textcolor{red}{\implies}
+\end{equation*}
+\begin{multline*}\arraycolsep=0.2pt
+    \renewcommand\arraystretch{1}\textcolor{red}{\implies}
+    \begin{array}{@{\hskip\arraycolsep}*{10}l|l}
+        \multicolumn{9}{l}{\sqrt[3]{33\qquad\quad\,}} &    & 3.2                                                                                                                                         \\
+        \cline{10-11}
+                                                      & -2 & 7   &   &   &   &   &   &   &  & 90\times 32\times2+2^3=5768                                                                                \\
+        \cline{2-3}
+                                                      &    & 6   & 0 & 0 & 0 &   &   &   &  & 960\times 32\boxed{\textcolor{white}{7}}\times\boxed{\textcolor{white}{7}}+\boxed{\textcolor{white}{7}}^3= \\
+                                                      & -  & 5   & 7 & 6 & 8 &   &   &   &  &                                                                                                            \\
+        \cline{2-6}
+                                                      &    &     & 2 & 3 & 2 & 0 & 0 & 0 &  &
+    \end{array}
+    \textcolor{red}{\implies}\\\arraycolsep=0.2pt
+    \renewcommand\arraystretch{1}\textcolor{red}{\implies}
+    \begin{array}{@{\hskip\arraycolsep}*{13}l|l}
+        \multicolumn{12}{l}{\sqrt[3]{33\qquad\qquad\quad}} &    & 3.20                                                                                                                                                       \\
+        \cline{13-14}
+                                                           & -2 & 7    &   &   &   &   &   &   &   &   &   &  & 90\times 32\times2+2^3=5768                                                                                  \\
+        \cline{2-3}
+                                                           &    & 6    & 0 & 0 & 0 &   &   &   &   &   &   &  & 960\times 320\times0+0^3=0                                                                                   \\
+                                                           & -  & 5    & 7 & 6 & 8 &   &   &   &   &   &   &  & 9600\times 320\boxed{\textcolor{white}{7}}\times\boxed{\textcolor{white}{7}}+\boxed{\textcolor{white}{7}}^3= \\
+        \cline{2-6}
+                                                           &    &      & 2 & 3 & 2 & 0 & 0 & 0 &   &   &   &  &                                                                                                              \\
+                                                           & -  &      &   &   &   &   &   & 0 &   &   &   &  &                                                                                                              \\
+        \cline{2-9}
+                                                           &    &      & 2 & 3 & 2 & 0 & 0 & 0 & 0 & 0 & 0 &  &
+    \end{array}\textcolor{red}{\implies}\\\arraycolsep=0.2pt
+    \renewcommand\arraystretch{1}\textcolor{red}{\implies}
+    \begin{array}{@{\hskip\arraycolsep}*{13}l|l}
+        \multicolumn{12}{l}{\sqrt[3]{33\qquad\qquad\quad}} &    & 3.207                                                                               \\
+        \cline{13-14}
+                                                           & -2 & 7     &   &   &   &   &   &   &   &   &   &  & 90\times 32\times2+2^3=5768          \\
+        \cline{2-3}
+                                                           &    & 6     & 0 & 0 & 0 &   &   &   &   &   &   &  & 960\times 320\times0+0^3=0           \\
+                                                           & -  & 5     & 7 & 6 & 8 &   &   &   &   &   &   &  & 9600\times 3207\times7+7^3=215510743 \\
+        \cline{2-6}
+                                                           &    &       & 2 & 3 & 2 & 0 & 0 & 0 &   &   &   &  &                                      \\
+                                                           & -  &       &   &   &   &   &   & 0 &   &   &   &  &                                      \\
+        \cline{2-9}
+                                                           &    &       & 2 & 3 & 2 & 0 & 0 & 0 & 0 & 0 & 0 &  &                                      \\
+                                                           & -  &       & 2 & 1 & 5 & 5 & 1 & 0 & 7 & 4 & 3 &  &                                      \\
+        \cline{2-12}
+                                                           &    &       &   & 1 & 6 & 4 & 8 & 9 & 2 & 5 & 7 &  &                                      \\
+    \end{array}
+\end{multline*}
+El començament de l'algoritme es basa a trobar el nombre natural més gran que elevat al cub sigui menor al nombre al qual volem calcular la seva arrel cúbica. En aquest cas, tenim que $3^3=27<33$ i $4^3=64>33$. Per tant, el nombre escollit és 3. Un cop el tenim, apuntem el seu cub sota 33, fem la resta entre els dos nombres i afegim tres zeros al costat del nombre resultant. Així doncs, utilitzant la notació anterior, $s_0=6000$. D'altra banda, sota el 3, tripliquem el valor de l'aproximació trobada ($3\times 3=9$), afegim un zero al final d'aquest valor i busquem el nombre de 0 a 9 més gran, tal que $90\times 3\boxed{\textcolor{white}{7}}\times\boxed{\textcolor{white}{7}}+\boxed{\textcolor{white}{7}}^3\leq6000$. Aquest és el 2. Així doncs, apuntem el 2 al costat del 3  (havent-hi afegit degudament el punt decimal) i també el valor $90\times 32\times2+2^3=5768$ sota el 6000. Fem la resta entre 6000 i 5768 i al valor obtingut li afegim 3 zeros, obtenint doncs $s_1=232000$. D'altra banda, tripliquem l'aproximació feta fins ara (pensada com a nombre enter, és a dir, $3.2\to32$ i per tant, $32\times 3=96$), li afegim un zero al final i l'apuntem a la columna de la dreta. Ara busquem el nombre de 0 a 9 més gran tal que $960\times 32\boxed{\textcolor{white}{7}}\times\boxed{\textcolor{white}{7}}+\boxed{\textcolor{white}{7}}^3\leq232000$. Aquest és el 0. Així doncs, l'apuntem a dalt a la dreta al costat del 3.2 i calculem el valor $960\times 320\times0+0^3=0$ per restar-lo a 232000. Seguint aquest procés de forma anàloga, cada cop obtenim una millor aproximació de $\sqrt[3]{33}$.
+\subsection{Conclusions}
+Observem que l'algoritme implementat pel càlcul de l'arrel cúbica no és res més que una extensió del que ja teníem per al càlcul de l'arrel quadrada. Això ens porta a considerar que tenim un mètode per calcular arrels $n$-èssimes, amb $n\in\mathbb{N}$. Això sí, les condicions que s'hagin de satisfer en cada mètode del càlcul de l'arrel $n$-èssima seran més llargues i complicades com més gran sigui $n$, cosa que ens pot induir a pensar en nous i millors algoritmes.
+\printbibliography[heading=bibintoc]
+\end{document}

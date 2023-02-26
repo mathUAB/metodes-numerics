@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[left=2.6cm,right=2.6cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage[sorting=none,maxnames=10]{biblatex}
+\usepackage[catalan,english]{babel}
+\usepackage{csquotes}
+\usepackage{stmaryrd}
+\usepackage[affil-it]{authblk}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+
+\definecolor{color_green3}{RGB}{0,150,0}
+\definecolor{purple}{RGB}{140,0,190}
+\definecolor{blue_green}{RGB}{0,190,190}
+
+\titleformat{\section}
+  {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
+
+%%% url symbol for references it is needed \usepackage{stmaryrd} %%%
+\newcommand\enllas{\raise.5pt\hbox{$\boxempty\kern-5.3pt{}^{\tiny\nearrow}$}\kern-2pt}
+
+\DeclareFieldFormat{url}{%
+  \ifhyperref
+    {\href{#1}{\enllas}}
+    {\url{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{references.bib}
+
+\makeatletter
+\def\th@definition{%
+  \thm@notefont{}% same as heading font
+  \normalfont % body font
+}
+\makeatother
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Teorema}
+\newtheorem{conjecture}[theorem]{Conjectura}
+\newtheorem{definition}[theorem]{Definició}
+\newtheorem{corollary}[theorem]{Coro\lgem ari}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\CC}{\ensuremath{\mathbb{C}}}
+
+\renewcommand{\labelenumii}{\alph{enumii})}
+
+\title{\bfseries\large LLIURAMENT VOLUNTARI 5}
+
+\author{Víctor Ballester Ribó\endgraf NIU:1570866}
+\date{\parbox{\linewidth}{\centering
+  Mètodes numèrics\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Maig de 2021}}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+L'objectiu és demostrar part de la conjectura de Casas-Alvero. Comencem amb una definició i uns resultats que ens seran útils a l'hora de demostrar-la.
+\begin{definition}
+    Sigui $p\in\CC[z]$ un polinomi. Denotem per $K(p)$ el compacte connex més petit que conté totes les arrels complexes de $p$.
+\end{definition}
+\begin{theorem}
+    Sigui $p\in\CC[z]$ un polinomi. Aleshores, $K(p')\subseteq K(p)$.
+\end{theorem}
+\begin{proof}
+    Suposem que $\deg p=n$. Pel teorema fonamental de l'àlgebra podem escriure $p(z)$ com $p(z)=(z-\alpha_1)\cdots(z-\alpha_n)$, on $\alpha_i\in\CC$, per $i=1,\ldots,n$ i els $\alpha_i$ no són tots necessàriament diferents. Derivant $p(z)$, obtenim:
+    $$p'(z)=(z-\alpha_2)\cdots(z-\alpha_n)+\cdots+(z-\alpha_1)\cdots(z-\alpha_{n-1})=\sum_{i=1}^n\frac{p(z)}{z-\alpha_i}=p(z)\sum_{i=1}^n\frac{1}{z-\alpha_i}.$$
+    Suposem que $p'(\beta)=0$, $\beta\in\CC$. Volem veure que $\beta\in K(p)$. Si $p(\beta)=0$, aleshores és clar que $\beta\in K(p)$. En cas contrari, és a dir, si $p(\beta)\ne 0$, tenim que:
+    $$0=p'(\beta)=p(\beta)\sum_{i=1}^n\frac{1}{\beta-\alpha_i}\iff\sum_{i=1}^n\frac{1}{\beta-\alpha_i}=0.\qquad\text{\cite{1}}$$
+    Ara bé, retocant aquesta última expressió, obtenim:
+    \begin{multline*}
+        0=\overline{0}=\overline{\sum_{i=1}^n\frac{1}{\beta-\alpha_i}}=\sum_{i=1}^n\frac{1}{\overline{\beta-\alpha_i}}=\sum_{i=1}^n\frac{1}{\overline{\beta-\alpha_i}}\frac{\beta-\alpha_i}{\beta-\alpha_i}=\sum_{i=1}^n\frac{\beta-\alpha_i}{\|\beta-\alpha_i\|^2}\iff\\\iff\beta\sum_{i=1}^n\frac{1}{\|\beta-\alpha_i\|^2}=\sum_{i=1}^n\frac{\alpha_i}{\|\beta-\alpha_i\|^2}\iff\beta=\frac{\sum_{i=1}^n\frac{\alpha_i}{\|\beta-\alpha_i\|^2}}{\sum_{i=1}^n\frac{1}{\|\beta-\alpha_i\|^2}}.
+    \end{multline*}
+    Si anomenem $m_i:=\frac{1}{\|\beta-\alpha_i\|^2}$ i $M=\sum_{i=1}^nm_i$, obtenim que $\beta=\frac{1}{M}\sum_{i=1}^nm_i\alpha_i$. Una interpretació física d'aquest resultat és que $\beta$ és el centre de masses d'un conjunt de $n$ partícules, on la partícula $i$-èssima està situada en el punt $\alpha_i$ i té massa $m_i$. És clar que, per la definició del centre de masses, $\beta$ està contingut en una regió envoltat de les arrels $\alpha_i$. Aquesta regió és $K(p)$, és a dir, $\beta\in K(p)$. Com que el raonament que hem fet és vàlid per a qualsevol $\beta$ satisfent $p'(\beta)=0$, obtenim $K(p')\subseteq K(p)$.
+\end{proof}
+\begin{corollary}\label{coro}
+    Sigui $p\in\CC[z]$ un polinomi de grau $n$. Aleshores, $K(p^{(n-1)})\subseteq \cdots\subseteq K(p')\subseteq K(p)$. \cite{2}
+\end{corollary}
+\begin{proof}
+    Pel teorema anterior aplicat a $p$, obtenim $K(p')\subseteq K(p)$. Si l'apliquem a $p'$, obtenim $K(p'')\subseteq K(p')$. Iterant el procés fins aplicar el teorema anterior a $p^{(n-2)}$, obtenim: $$K(p^{(n-1)})\subseteq \cdots\subseteq K(p')\subseteq K(p).$$
+\end{proof}
+Posem ara un exemple més i\lgem ustratiu d'aquest últim coro\lgem ari. Considerem el polinomi següent (generat aleatòriament): $$p(z)=(z - \alpha_1)(z - \alpha_2)(z - \alpha_3)(z - \alpha_4)(z - \alpha_5)(z - \alpha_6)(z - \alpha_7),$$ on els valors de $\alpha_i$ es representen a la taula següent:
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        $\alpha_1$ & $0.273994495981102 + 0.186176450319403\mathrm{i}$   \\
+        \hline
+        $\alpha_2$ & $0.357383151761803 + 0.00556170295068669\mathrm{i}$ \\
+        \hline
+        $\alpha_3$ & $0.583390911966438 + 0.852776648628168\mathrm{i}$   \\
+        \hline
+        $\alpha_4$ & $0.708283194910822 + 0.515710545020349\mathrm{i}$   \\
+        \hline
+        $\alpha_5$ & $0.715180650502866 + 0.507858210223678\mathrm{i}$   \\
+        \hline
+        $\alpha_6$ & $0.765699868206733 + 0.0284062266659330\mathrm{i}$  \\
+        \hline
+        $\alpha_7$ & $0.979617456644666 + 0.167189780830185\mathrm{i}$   \\
+        \hline
+    \end{tabular}
+\end{table}\par
+A la figura \ref{image1} es mostren els compactes connexos $K(p^{(j)})$ per a $j=0,1,\ldots,6$.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\linewidth]{image.tex}
+    \caption{Representació de $K(p)$ (regió blava), $K(p')$ (regió vermella), $K(p'')$ (regió verda), $K(p^{(3)})$ (regió porpra), $K(p^{(4)})$ (regió taronja), $K(p^{(5)})$ (regió cian) i $K(p^{(6)})$ (regió negra) del polinomi $p(z)$ descrit anteriorment.}
+    \label{image1}
+\end{figure}
+\begin{theorem}\label{teo5}
+    Sigui $p\in\CC[z]$ un polinomi. Si $p$ i $p'$ comparteixen l'arrel $\alpha$ i $\alpha$ és una arrel de multiplicitat $m$ en $p'$, aleshores $\alpha$ és una arrel de multiplicitat $m+1$ en $p$.
+\end{theorem}
+\begin{proof}
+    Suposem que $p(z)=(z-\alpha)^tq(z)$ i $p'(z)=(z-\alpha)^ms(z)$ amb $q(\alpha),s(\alpha)\ne 0$. Derivant $p$ obtenim:
+    $$p'(z)=t(z-\alpha)^{t-1}q(z)+(z-\alpha)^tq'(z)=(z-\alpha)^{t-1}[tq(z)+(z-\alpha)q'(z)]=:(z-\alpha)^{t-1}r(z),$$ amb $r(\alpha)\ne 0$.
+    Ara bé, com que $p'(z)=(z-\alpha)^ms(z)$ amb $s(\alpha)\ne 0$, tenim necessàriament que $r(z)=s(z)$ i $t-1=m$, és a dir, $t=m+1$.
+\end{proof}
+\begin{corollary}\label{coro2}
+    Sigui $p\in\CC[z]$ un polinomi. Si $p$ i $p^{(j)}$ comparteixen l'arrel $\alpha$ per a $j=0,1,\ldots,k$, i $\alpha$ és una arrel de multiplicitat $m$ en $p^{(k)}$, aleshores $\alpha$ és una arrel de multiplicitat $m+k$ en $p$.
+\end{corollary}
+\begin{proof}
+    Anem aplicant el teorema anterior successivament als polinomis $p^{(j)}$ i $p^{(j+1)}$ per a $j=k-1,k-2\ldots,1,0$ per obtenir el que volíem.
+\end{proof}
+Passem ara a enunciar la conjectura de Casas-Alvero i demostrar-la per polinomis de grau petit.
+\begin{conjecture}[Conjectura de Casas-Alvero]
+    Sigui $p\in\CC[z]$ un polinomi de grau $n$. Si els polinomis $p$ i $p^{(j)}$ comparteixen com a mínim una arrel per a tot $j=1,2,\ldots,n-1$, aleshores $\exists \alpha,\beta\in\CC$, tals que $p(z)=\alpha(z-\beta)^n$.
+\end{conjecture}
+\begin{proof}
+    Demostrarem la conjectura per a $n=1,2,3,4$:
+    \begin{itemize}
+        \item Cas $n=1$:\par
+              En aquest cas $p$ té una única arrel i, per tant, és clar que és de la forma $p(z)=\alpha(z-\beta)$.
+        \item Cas $n=2$:\par
+              Suposem que $p(z)=\alpha_0(z-\beta_1)(z-\beta_2)$. Com que per hipòtesi $p'$ ha de compartir una arrel amb $p$, sense pèrdua de generalitat, podem suposar que $p'$ és de la forma $p'(z)=\alpha_1(z-\beta_1)$. Ara bé, el teorema \ref{teo5} ens assegura que com que $p$ i $p'$ comparteixen l'arrel $\beta_1$, i $\beta_1$ és una arrel de multiplicitat 1 en $p'$, aleshores $\beta_1$ és una arrel de multiplicitat $1+1=2$ en $p$. És a dir, $\beta_1=\beta_2$ i $p$ és de la forma $p(z)=\alpha_0(z-\beta_1)^2$.
+        \item Cas $n=3$:\par
+              Suposem que $p(z)=\alpha_0(z-\beta_1)(z-\beta_2)(z-\beta_3)$ i sense pèrdua de generalitat $p'(z)=\alpha_1(z-\beta_1)(z-\gamma)$ on $\gamma$ és un valor, a priori, qualsevol. L'objectiu és veure que $p''(z)=\alpha_1(z-\beta_1)$. Suposem també que $p''(z)=\alpha_1(z-\beta_2)$, que ho podem fer per les hipòtesis de la conjectura. Pel coro\lgem ari \ref{coro}, com que $K(p'')\subseteq K(p')$, tenim que $\beta_2$ pertany al segment que formen $\beta_1$ i $\gamma$ (denotat per $[\beta_1,\gamma]$). Ara bé, perquè es compleixi $K(p')\subseteq K(p)$ necessàriament $\beta_1$, $\beta_2$ i $\beta_3$ han d'estar alineats ja que en cas contrari $\gamma$ estaria fora del triangle delimitat per les tres arrels de $p$. D'altra banda, pel teorema \ref{teo5} aplicat a $p$ i $p'$ obtenim que $p$ ha de ser de la forma $p(z)=\alpha_0(z-\beta_1)^2(z-\beta_2)$ (és a dir, $\beta_3=\beta_1)$ o de la forma $p(z)=\alpha_0(z-\beta_1)^2(z-\beta_3)$ (és a dir, $\beta_2=\beta_1)$.\par Pel primer cas, com que $\beta_2\in[\beta_1,\gamma]$, necessàriament $\beta_2=\gamma$, ja que si no, no se satisfaria el coro\lgem ari \ref{coro}. Ara bé, si apliquem el teorema \ref{teo5} a $p'$ i $p''$, obtenim que $p'=\alpha_1(z-\beta_2)^2$, el que comporta (tornant a aplicar aquest teorema) que $p(z)=\alpha_0(z-\beta_2)^3$.\par Pel segon cas, tenim que $p$, $p'$ i $p''$ comparteixen l'arrel $\beta_1$ i, per tant, pel coro\lgem ari \ref{coro2}, tenim que $p(z)=\alpha_0(z-\beta_1)^3$.
+        \item Cas $n=4$:\par
+              \begin{itemize}
+                  \item Suposem que $p$ i $p'$ comparteixen 3 arrels ($\beta_1$, $\beta_2$ i $\beta_3$) a priori diferents, tenim que $p'(z)=\alpha_1(z-\beta_1)^{r_1}(z-\beta_2)^{r_2}(z-\beta_3)^{r_3}$ amb $r_i\in\NN$ i $r_1+r_2+r_3=3$. Si apliquem el teorema \ref{teo5}, obtenim que cadascuna d'aquestes arrels ha de tenir multiplicitat $r_i+1$ en $p$. Observem que si $r_1=r_2=r_3=1$, $p$ hauria de tenir grau com a mínim 6, per tant, no pot ser. Això vol dir que hi ha almenys una arrel que és igual a una altra. Suposem $\beta_2=\beta_1$. De nou, pel teorema \ref{teo5}, $\beta_1$ té multiplicitat com a mínim $r_1+r_2+1\geq 3$ i $\beta_3$ té multiplicitat com a mínim $r_3+1\geq 2$. Això ens porta altre cop a contradicció, de manera que deduïm, que $\beta_3=\beta_1$. Però ara $p'(z)=\alpha_1(z-\beta_1)^3$. Com que $p$ i $p'$ comparteixen l'arrel $\beta_1$ deduïm que $p(z)=\alpha_0(z-\beta_1)^4$.
+                  \item Suposem que $p$ i $p'$ comparteixen dues arrels ($\beta_1$ i $\beta_2$).\par Si $\beta_1=\beta_2$, aleshores $p'(z)=\alpha_1(z-\beta_1)^2(z-\gamma_1)$ i el teorema \ref{teo5} implica que $p(z)=\alpha_0(z-\beta_1)^3(z-\beta_3)$. És a dir, $\gamma_1\in[\beta_1,\beta_3]$ i, per tant, $[\beta_1,\gamma_1]=K(p')\subset K(p)=[\beta_1,\beta_3]$. La inclusió és estricta ja que hem suposat que $\gamma_1\ne\beta_3$. D'altra banda, pel coro\lgem ari \ref{coro} i les hipòtesis de la conjectura, deduïm que $p^{(3)}$ ha de tenir necessàriament l'arrel $\beta_1$, que pel coro\lgem ari \ref{coro2} implica que $p(z)=\alpha(z-\beta_1)^4$.\par Si $\beta_1\ne\beta_2$, aleshores pel teorema \ref{teo5} tenim que aquestes són les dues úniques arrels de $p$, cadascuna d'elles amb multiplicitat 2. És a dir, $p(z)=\alpha_0(z-\beta_1)^2(z-\beta_2)^2$ i $p'(z)=\alpha_1(z-\beta_1)(z-\beta_2)(z-\gamma_1)$. En aquest cas s'ha de complir $K(p')=K(p)$, per tant, $\gamma_1\in[\beta_1,\beta_2]$. Com que $p''$ comparteix una arrel amb $p$ (per exemple $\beta_1$) tenim que, pel coro\lgem ari \ref{coro2}, $p$ té l'arrel $\beta_1$ amb multiplicitat com a mínim 3. Però com que $p(z)=\alpha_1(z-\beta_1)^2(z-\beta_2)^2$, deduïm que $\beta_2=\beta_1$ i $p$ és de la forma $p(z)=\alpha(z-\beta_1)^4$.
+                  \item Suposem ara que $p$ i $p'$ comparteixen només una arrel ($\beta_1$). Pel teorema \ref{teo5} tenim que $\beta_1$ ha de tenir multiplicitat com a mínim 2 a $p$, és a dir, $p$ és de la forma $p(z)=\alpha_0(z-\beta_1)^2(z-\beta_2)(z-\beta_3)$. Notem que no és possible que $K(p')$ contingui una sola arrel de $p$ (comptant multiplicitat). Si $K(p')$ només conté dues arrels de $p$ (comptant multiplicitat), aquestes són de fet $\beta_1$ (amb multiplicitat 2) i per hipòtesi $\beta_1$ ha de ser arrel també de $p''$ i $p^{(3)}$. Però llavors, pel coro\lgem ari \ref{coro2}, obtenim $p(z)=\alpha_0(z-\beta_1)^4$. Si d'altra banda $K(p')$ conté tres arrels de $p$, sense pèrdua de generalitat, podem suposar $p''(z)=\alpha_2(z-\beta_2)(z-\gamma_2)$. Suposem que les arrels de $p$ no estan alineades. Aleshores perquè es compleixi $K(p')\subseteq K(p)$, necessàriament dues arrels diferents de $p$ han de coincidir amb dues arrels de $p'$ i llavors ens podem reduir al cas anterior. En cas contrari, és a dir, en el cas que les arrels de $p$ estiguin alineades, s'ha de complir necessàriament que $\beta_2\in[\beta_1,\beta_3]$, ja que si no, no es complirien les inclusions hipotètiques. A més, en aquest cas només tenim dues opcions per a $p^{(3)}$. Si $p^{(3)}(z)=\alpha_3(z-\beta_2)$, aleshores pel teorema \ref{teo5}, $p''(z)=\alpha_2(z-\beta_2)^2$. Ara bé, suposant que $p'(z)=\alpha_1(z-\beta_1)(z-\gamma_1)(z-\delta_1)$, podem plantejar el següent sistema d'equacions:
+                        \begin{multline*}
+                            \left\{\begin{array}{l}
+                                p(z)=\alpha_0(z-\beta_1)^2(z-\beta_2)(z-\beta_3)  \\
+                                p'(z)=\alpha_1(z-\beta_1)(z-\gamma_1)(z-\delta_1) \\
+                                p''(z)=\alpha_2(z-\beta_2)^2
+                            \end{array}\right.\iff\\\iff\left\{\begin{array}{l}
+                                \left[\alpha_0(z-\beta_1)^2(z-\beta_2)(z-\beta_3)\right]'=\alpha_1(z-\beta_1)(z-\gamma_1)(z-\delta_1) \\
+                                \left[\alpha_1(z-\beta_1)(z-\gamma_1)(z-\delta_1)\right]'=\alpha_2(z-\beta_2)^2
+                            \end{array}\right.\iff\\\iff\left\{\begin{array}{l}
+                                \frac{2\beta_1+3\beta_2+3\beta_3}{4}=\gamma_1+\delta_1                   \\
+                                \frac{\beta_1\beta_2+\beta_1\beta_3+2\beta_1\beta_3}{4}=\gamma_1\delta_1 \\
+                                \frac{\beta_1+\gamma_1+\delta_1}{3}=\beta_2                              \\
+                                \frac{\beta_1\gamma_1+\beta_1\delta_1+\gamma_1\delta_1}{3}=\beta_2^2
+                            \end{array}\right.
+                        \end{multline*} on en l'última doble implicació hem expandit els polinomis i hem igualat coeficient a coeficient per formar les quatre equacions finals. Aquest sistema té solució si i només si $\beta_1=\beta_2=\beta_3=\gamma_1=\delta_1=:z_0$. Per tant, obtenim $p(z)=\alpha_0(z-z_0)^4$. Si $p^{(3)}(z)=\alpha_3(z-\beta_1)$, això implica que $\beta_1\in[\beta_2,\gamma_2]\subseteq[\beta_1,\beta_3]$ i, per tant, que $\beta_1=\beta_2$ i ens reduïm al cas que acabem de comentar.
+                  \item Finalment, si $K(p')$ conté les 4 arrels de $p$, tenim que $K(p)\subseteq K(p')$ i, per tant, $K(p)=K(p')$, el que implica que totes les arrels de $p'$ són les mateixes que les de $p$. Llavors ens reduïm al primer cas.
+              \end{itemize}
+    \end{itemize}
+\end{proof}
+\printbibliography[heading=bibintoc,title={Referències}]
+\end{document}

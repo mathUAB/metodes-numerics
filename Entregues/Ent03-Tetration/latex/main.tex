@@ -1,0 +1,226 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[left=2.8cm,right=2.8cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{listings} 
+\usepackage{array}
+\usepackage[sorting=none,maxnames=10]{biblatex}
+\usepackage[catalan,english]{babel}
+\usepackage{csquotes}
+\usepackage{stmaryrd}
+\usepackage[affil-it]{authblk}
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
+
+\renewcommand{\lstlistingname}{Programa}
+
+%%% url symbol for references it is needed \usepackage{stmaryrd} %%%
+\newcommand\enllas{\raise.5pt\hbox{$\boxempty\kern-5.3pt{}^{\tiny\nearrow}$}\kern-2pt}
+
+\DeclareFieldFormat{url}{%
+  \ifhyperref
+    {\href{#1}{\enllas}}
+    {\url{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{references.bib}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{prop}{Proposició}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+\lstloadlanguages{C,Python,bash}
+\lstset{ %
+        backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+        basicstyle=\color{red}\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+        breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+        breaklines=true,                 % sets automatic line breaking
+        captionpos=b,                    % sets the caption-position to bottom
+        deletekeywords={...},            % if you want to delete keywords from the given language
+        escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+        extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+        frame=single,                    % adds a frame around the code
+        keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+        keywordstyle=\color{darkblue},       % keyword style
+        commentstyle=\itshape\color{gray},
+        identifierstyle=\color{black},
+        language=C,                 % the language of the code
+        otherkeywords={*,...},           % if you want to add more keywords to the set
+        numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+        numbersep=5pt,                   % how far the line-numbers are from the code
+        numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+        rulecolor=\color{gray},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+        showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+        showstringspaces=false,          % underline spaces within strings only
+        showtabs=false,                  % show tabs within strings adding particular underscores
+        stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+        stringstyle=\color{blue},     % string literal style
+        tabsize=2,                         % sets default tabsize to 2 spaces
+        %title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+\lstset{literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+        {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+        {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+        {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+        {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+        {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+        {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+        {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+        {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+        {€}{{\EUR}}1 {£}{{\pounds}}1
+}
+
+
+\renewcommand{\labelenumii}{\alph{enumii})}
+
+\title{\bfseries\large LLIURAMENT VOLUNTARI 3}
+
+\author{Víctor Ballester Ribó\endgraf NIU:1570866}
+\date{\parbox{\linewidth}{\centering
+  Mètodes numèrics\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Abril de 2021}}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+Donat $z\in\mathbb{R}^+$, l'objectiu és estudiar la convergència o divergència de la iteració
+\begin{equation}
+    \left\{\begin{array}{l}
+        z_{n+1}=z^{z_n} \\
+        z_0=z
+    \end{array}\right.
+    \label{iteracio}
+\end{equation}
+Per fer-ho, definim la funció $g_z:\mathbb{R}^+\rightarrow\mathbb{R}^+$ com $g_z(x)=z^x$. Per un resultat de teoria sabem que una condició suficient perquè la successió $(z_n)$ tingui límit $\alpha\in\mathbb{R}$ (suposant que existeixi) és que $|g_z'(\alpha)|<1$. Calculem doncs $|g_z'(\alpha)|$: $$g_z'(x)=z^x\log z\implies |g_z'(\alpha)|=z^\alpha\log z.$$ Ara bé, per la definició de la iteració tenim que en el límit s'ha de complir $\alpha=z^\alpha$. Per tant: $$|g_z'(\alpha)|=z^\alpha\log z=\alpha\log z=\log z^\alpha=\log\alpha.$$ Així doncs,
+\begin{equation}
+    |g_z'(\alpha)|<1\iff|\log\alpha|<1\iff\frac{1}{e}<\alpha<e.
+    \label{1}
+\end{equation}
+Ara bé, de l'equació $\alpha=z^\alpha$ deduïm que $z=\alpha^{1/\alpha}$ i, per tant, substituint en aquesta equació les cotes de $\alpha$ de l'equació \eqref{1}, tenim que la iteració convergeix si $$\frac{1}{e^e}<z<e^{1/e}.\qquad\text{\cite{1} }$$ Cal estudiar ara els extrems d'aquest interval, és a dir, quan $|g_z'(\alpha)|=1$, ja que en aquests punts no tenim garantia que la successió convergeixi. Això passa quan $z$ pren els valors $1/e^e$ i $e^{1/e}$, per la continuïtat de la funció $x^{1/x}$.\par
+En el cas $z=e^{1/e}$, hem de veure que la iteració
+$$\left\{\begin{array}{l}
+        z_{n+1}=e^{z_n/e} \\
+        z_0=e^{1/e}
+    \end{array}\right.$$
+convergeix. Vegem primer que $1\leq z_n\leq e$, per a tot $n\in\mathbb{N}\cup\{0\}$.\par És clar que $z_n\geq 0$ per a tot $n\in\mathbb{N}\cup\{0\}$. Per tant: $$z_n=e^{z_{n-1}/e}\geq e^{0/e}=1.$$ D'altra banda, demostrem per inducció sobre $n$ que $z_n\leq e$. Per $n=0$ és clar que $z_0=e^{1/e}\leq e$. Suposem la hipòtesi certa per $n=k$ i demostrem-la per $n=k+1$. Tenim que per hipòtesi d'inducció $z_k\leq e$ i, per tant, $$z_{k+1}=e^{z_k/e}\leq e^{e/e}=e.$$ Això prova que $(z_n)$ és una successió acotada. Vegem ara que la successió és creixent.\par
+En efecte, tenim que: $$z_{n+1}=e^{z_n/e}\iff\log z_{n+1}=\frac{z_n}{e}\iff\frac{\log z_{n+1}}{z_n}=\frac{1}{e},\quad\forall n\in\mathbb{N}\cup\{0\}.$$ Suposem que $z_k>z_{k+1}$ per algun $k\in\mathbb{N}\cup\{0\}$. Aleshores tindríem que $$\frac{1}{e}=\frac{\log z_{k+1}}{z_k}<\frac{\log z_k}{z_k}.$$ Ara bé, aquesta última desigualtat no és certa ja que el valor màxim que pren la funció $\frac{\log x}{x}$ és exactament $1/e$.\par
+Com que $(z_n)$ és monòtona i acotada, és convergent.\par
+Estudiem ara el cas $z=1/e^e$. Hem de veure que la iteració
+$$\left\{\begin{array}{l}
+        z_{n+1}=\frac{1}{e^{z_ne}} \\
+        z_0=\frac{1}{e^e}
+    \end{array}\right.$$
+convergeix. Vegem primer que $0\leq z_n\leq 1$, per a tot $n\in\mathbb{N}\cup\{0\}$.\par
+La primera desigualtat és clara. Per a l'altra desigualtat tenim que: $$z_{n+1}=\frac{1}{e^{z_ne}}\leq\frac{1}{e^{0\cdot e}}=1.$$ Per tant, $(z_n)$ està acotada.\par
+Considerem la successió parcial $(a_k)$ definida per $a_k=z_{2k}$. Tenim que \begin{equation}
+    a_{k+1}=z_{2k+2}=\frac{1}{e^{z_{2k+1}e}}=\frac{1}{e^{e^{1-z_{2k}e}}}=\frac{1}{e^{e^{1-a_ke}}},
+    \label{parells}
+\end{equation} amb $a_0=1/e^e\approx0.065988$. De manera similar considerem $(b_k)=(z_{2k+1})$. Tenim que
+\begin{equation}
+    b_{k+1}=z_{2k+3}=\frac{1}{e^{z_{2k+2}e}}=\frac{1}{e^{e^{1-z_{2k+1}e}}}=\frac{1}{e^{e^{1-b_ke}}},
+    \label{senars}
+\end{equation} amb $b_0=1/e^{e^{1-e}}\approx0.835793$.
+Vegem per inducció sobre $k$ que $a_k\leq 1/e$ i $b_k\geq 1/e$. El cas $k=0$ és immediat ja que: $$a_0=\frac{1}{e^e}<\frac{1}{e},\qquad b_0=\frac{1}{e^{e^{1-e}}}>\frac{1}{e},$$ perquè $e^{1-e}=\frac{e}{e^e}<1\iff e^{e^{1-e}}<e^1\iff b_0>1/e$. Suposem la hipòtesi certa per un $k=m$ (és a dir $a_k\leq 1/e$ i $b_k\geq 1/e$ $\forall k\leq m$) i demostrem-la per $k=m+1$. Tenim que $$a_{m+1}=\frac{1}{e^{e^{1-a_me}}}\leq\frac{1}{e^{e^{1-\frac{1}{e}e}}}=\frac{1}{e^{e^0}}=\frac{1}{e},\quad b_{m+1}=\frac{1}{e^{e^{1-b_me}}}\geq\frac{1}{e^{e^{1-\frac{1}{e}e}}}=\frac{1}{e^{e^0}}=\frac{1}{e},$$ on en ambdós casos hem aplicat la hipòtesi d'inducció.
+Vegem ara que $(a_k)$ és creixent i $(b_k)$ decreixent. Suposem que no és així, és a dir, que existeixen $s,r\in\mathbb{N}\cup\{0\}$ tals que $a_{s+1}<a_s$ i $b_{r+1}>b_r$. Però aleshores tindríem que:
+\begin{gather*}
+    a_s>a_{s+1}=\frac{1}{e^{e^{1-a_se}}}\iff e<\frac{1-\log\log\frac{1}{a_s}}{a_s},\\
+    b_r<b_{r+1}=\frac{1}{e^{e^{1-b_re}}}\iff e>\frac{1-\log\log\frac{1}{b_r}}{b_r}.
+\end{gather*}
+Ara bé, notem que la funció $f(x)=\frac{1-\log\log\frac{1}{x}}{x}$ és estrictament creixent i $f(1/e)=e$. Per l'acotació $a_k\leq\frac{1}{e}\leq b_k$, que hem vist anteriorment, arribem a una contradicció. Per tant, les successions $(a_k)$ i $(b_k)$ són monòtones i acotades i, consegüentment, convergents. Calculant el seu límit, és a dir, resolent l'equació $x=\frac{1}{e^{e^{1-xe}}}$, obtenim una única solució $x=\frac{1}{e}$, que correspon al límit de les successions $(a_k)$ i $(b_k)$. Com que una d'elles és la successió de termes parells de $(z_n)$ i l'altra, la successió de termes senars, deduïm que $(z_n)$ és convergent, com volíem demostrar. Per tant tenim que $$(z_n)\text{ convergeix}\iff 1/e^e\leq z\leq e^{1/e}.$$ Observem que en aquesta última equació tenim la doble implicació ja que si $z\notin[1/e^e,e^{1/e}]$, hem vist anteriorment que $|g_z'(\alpha)|>1$ i, per tant, $z$ és un punt repulsor.\par
+És interessant fer èmfasi en l'estudi del comportament de $(z_n)$ fora d'aquest interval de convergència. Per al cas $z\in(0,1/e^e)$ no és difícil veure que la successió, per continuïtat, ha de ser osci\lgem ant. En efecte, per al cas $z=1/e^e$ ens hem trobat una successió osci\lgem ant amb dues parcials convergint al mateix punt. Separant-nos una mica del punt $z=1/e^e$, la nostra intuïció ens porta a pensar que hi haurà dues parcials (la dels termes parells i la dels termes senars) convergint a dos punts diferents de l'interval i, per tant, la successió no convergirà. El programa {\ttfamily iterats} de l'annex \ref{appendix1} retorna la llista dels $n$ primers iterats de la successió $(z_n)$ amb $z_0=z$.\par
+A la taula \ref{taula1} podem veure uns quants valors de la successió $(z_n)$ utilitzant el valor inicial $z_0=0.05<0.065988\approx1/e^e$.\par
+\begin{table}[ht]
+    \def\arraystretch{1}
+    \centering
+    \begin{tabular}{|c||c||c||c|}
+        \hline
+        $0\leq n\leq 9$    & $10\leq n\leq 19$  & $\cdots$ & $325\leq n\leq 334$ \\
+        \hline
+        \hline
+        0.0500000000000000 & 0.116416584607138  & $\cdots$ & 0.662660838900549   \\
+        \hline
+        0.860891659331735  & 0.705567440560545  & $\cdots$ & 0.137359395737956   \\
+        \hline
+        0.0758497455459820 & 0.120791283462031  & $\cdots$ & 0.662660838900549   \\
+        \hline
+        0.796741072475616  & 0.696381005849372  & $\cdots$ & 0.137359395737956   \\
+        \hline
+        0.0919212594009088 & 0.124161635028397  & $\cdots$ & 0.662660838900549   \\
+        \hline
+        0.759290007184149  & 0.689385252311344  & $\cdots$ & 0.137359395737956   \\
+        \hline
+        0.102834993569945  & 0.1267911988280700 & $\cdots$ & 0.662660838900548   \\
+        \hline
+        0.734866735033395  & 0.683975974940914  & $\cdots$ & 0.137359395737956   \\
+        \hline
+        0.110641061786732  & 0.128862555680671  & $\cdots$ & 0.662660838900548   \\
+        \hline
+        0.717881331845427  & 0.679744887323325  & $\cdots$ & 0.137359395737956   \\
+        \hline
+    \end{tabular}
+    \caption{Valors de la successió $(z_n)$ per a $z_0=0.05$ i $0\leq n\leq 334$}
+    \label{taula1}
+\end{table}
+L'altre interval interessant a tenir en compte per a $z$ és $(e^{1/e},\infty)$. L'objecte d'estudi en aquest interval és veure com de ràpid creix la successió. Recordem que el nombre de dígits $d(r)$ d'un nombre $r\in\mathbb{R}$, ve donat per $$d(r)=\lfloor\log_{10}r\rfloor+1.$$ Ara bé, si calculem el nombre de xifres de $z_{n+1}$, tenim que (si $z_n$ és prou gran): $$\lfloor\log_{10}z_{n+1}\rfloor+1=\lfloor z_{n}\log_{10}z\rfloor+1\approx \lfloor z_{n}\log_{10}z\rfloor.$$ És a dir, $d(z_{n+1})\propto z_n$. En particular, fent $z_0=10$, el nombre de zeros de $z_{n+1}$ és exactament $z_n$. Posant valors numèrics, obtenim els resultats que es mostren a la taula \ref{taula2}.
+%\multirow{2}{4em}{$z_0=2$} & \multirow{2}{4em}{$z_0=10$}
+\begin{table}[ht]
+    \def\arraystretch{1}
+    \centering
+    \begin{tabular}{|c|c|c||c||c|}
+        \hline
+        \multicolumn{3}{|c||}{$z_0=e^{1/e}+0.01\approx1.4546679$} & $z_0=2$  & $z_0=10$                                                                           \\
+        \hline
+        $0\leq n\leq 9$                                           & $\cdots$ & $25\leq n\leq 34$             & $0\leq n\leq 9$               & $0\leq n\leq 9$    \\
+        \hline
+        \hline
+        1.45466786100977                                          & $\cdots$ & 4.15489059114569              & 2                             & 10                 \\
+        \hline
+        1.72491354476066                                          & $\cdots$ & 4.74532501223298              & 4                             & $10^{10}$          \\
+        \hline
+        1.90876981589979                                          & $\cdots$ & 5.92062205918696              & 16                            & $10^{10000000000}$ \\
+        \hline
+        2.04493125177059                                          & $\cdots$ & 9.19736038203488              & 65536                         & $+\infty$          \\
+        \hline
+        2.15199308156614                                          & $\cdots$ & 31.4049226677754              & 2.003529930$\times10^{19728}$ & $+\infty$          \\
+        \hline
+        2.24009618139534                                          & $\cdots$ & 129296.249279161              & $+\infty$                     & $+\infty$          \\
+        \hline
+        2.31529676467142                                          & $\cdots$ & 5.682216954$\times10^{21044}$ & $+\infty$                     & $+\infty$          \\
+        \hline
+        2.38147814814913                                          & $\cdots$ & $+\infty$                     & $+\infty$                     & $+\infty$          \\
+        \hline
+        2.44128530665827                                          & $\cdots$ & $+\infty$                     & $+\infty$                     & $+\infty$          \\
+        \hline
+        2.49662307556050                                          & $\cdots$ & $+\infty$                     & $+\infty$                     & $+\infty$          \\
+        \hline
+    \end{tabular}
+    \caption{Valors de la successió $(z_n)$ per a diferents valors inicials. En aquesta taula el símbol $+\infty$ significa que el nombre en qüestió no cabria en aquest full (escrit en la mateixa mida de lletra).}
+    \label{taula2}
+\end{table}
+\appendix
+\section{Programa en Python}\label{appendix1}
+\begin{lstlisting}[language=Python, caption={Programa que calcula la llista dels $n$ primers termes de la successió \eqref{iteracio} partint de $z_0=z$}]
+def f(n,z):
+    zn=z.n()
+    for i in range(0,n):
+        zn=(e^(zn*log(z))).n()
+    return zn
+def iterats(n,z):
+    return [f(i,z) for i in range(0,n+1)]
+\end{lstlisting}
+\printbibliography[heading=bibintoc,title={Referències}]
+\end{document}
